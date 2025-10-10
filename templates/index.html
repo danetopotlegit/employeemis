@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Employee Management</title>
+</head>
+<body>
+    <h1>Employee List</h1>
+    <form method="POST" action="/add">
+        Name: <input type="text" name="name">
+        Department: <input type="text" name="department">
+        <button type="submit">Add</button>
+    </form>
+    <ul>
+        {% for emp in employees %}
+            <li>{{ emp.name }} - {{ emp.department }}
+            <a href="/delete/{{ emp.id }}">Delete</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
