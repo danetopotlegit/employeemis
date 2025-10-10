@@ -1,11 +1,10 @@
 pipeline {
     agent any
     stages {
-        stage('Checkout')
-        {
+        stage('Checkout') {
             steps {
                 git(
-                    'https://github.com/danetopotlegit/employeemis.git' ,
+                    url: 'https://github.com/danetopotlegit/employeemis.git' ,
                     branch: 'main',
                     credentialsId: 'GitHubAccessTokenId'
                     )
