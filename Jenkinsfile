@@ -12,7 +12,7 @@ pipeline {
         }
 
         stage('Static Code Analysis') {
-            
+            steps { sh 'sonar-scanner -Dsonar.projectKey=employee-app' }
         }
     }
 }
