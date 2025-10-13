@@ -1,7 +1,7 @@
 pipeline {
     agent any
     stages {
-        stage('Checkout') {
+        stage('Code Checkout') {
             steps {
                 git(
                     url: 'https://github.com/danetopotlegit/employeemis.git' ,
@@ -9,6 +9,10 @@ pipeline {
                     credentialsId: 'GitHubAccessTokenId'
                     )
             }
+        }
+
+        stage('Static Code Analysis') {
+            
         }
     }
 }
