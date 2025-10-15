@@ -25,7 +25,7 @@ pipeline {
                 }
         }
 
-         stage('Dependency Scan') {
+        stage('Dependency Scan') {
             steps {
                 snykSecurity(
                     snykInstallation: 'Snyk',
