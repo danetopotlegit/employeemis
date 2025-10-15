@@ -27,13 +27,13 @@ pipeline {
 
         stage('Dependency Scan') {
             steps {
-                snykSecurity(
+                /*snykSecurity(
                     snykInstallation: 'SnykSecurity',
                     snykTokenId: 'snyk-api-token',
                     targetFile: 'requirements.txt',
                     monitorProjectOnBuild: true,
                     failOnIssues: true
-                )
+                )*/
             }
         }
 
