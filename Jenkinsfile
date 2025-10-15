@@ -1,14 +1,7 @@
+/* groovylint-disable LineLength */
 pipeline {
     agent any
-
-    tools {
-        sonarQubeScanner 'SonarScanner'
-    }
-
-    environment {
-        SONARQUBE_ENV = 'SonarQubeServer'
-    }
-
+    
     stages {
         stage('Code Checkout') {
             steps {
@@ -21,7 +14,15 @@ pipeline {
         }
 
         stage('Static Code Analysis') {
-            steps { sh 'SonarQubeServer -Dsonar.projectKey=employee-app' }
+                steps {
+                    script{
+                        def scannerHome = tool name: 'SonarScanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+                         withSonarQubeEnv('SonarQubeServer') 
+                         {
+                            sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=employeeMIS"
+                         }
+                    }
+                }
         }
     }
 }
