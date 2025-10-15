@@ -27,6 +27,7 @@ pipeline {
 
         stage('Dependency Scan') {
             steps {
+                echo("Skipping dependency scan  for now ...")
                 /*snykSecurity(
                     snykInstallation: 'SnykSecurity',
                     snykTokenId: 'snyk-api-token',
