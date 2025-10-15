@@ -8,7 +8,7 @@ pipeline {
                 git(
                     url: 'https://github.com/danetopotlegit/employeemis.git' ,
                     branch: 'main',
-                    credentialsId: 'GitHubAccessTokenId'
+                    credentialsId: 'github-token'
                     )
             }
         }
@@ -30,6 +30,7 @@ pipeline {
                 snykSecurity(
                     snykInstallation: 'SnykSecurity',
                     snykTokenId: 'snyk-api-token',
+                    additionalArguments: '--all-projects',
                     monitorProjectOnBuild: true,
                     failOnIssues: true
                 )
