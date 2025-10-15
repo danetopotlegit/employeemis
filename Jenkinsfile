@@ -7,7 +7,7 @@ pipeline {
             steps {
                 git(
                     url: 'https://github.com/danetopotlegit/employeemis.git' ,
-                    branch: 'main',
+                    branch: 'master',
                     credentialsId: 'github-token'
                     )
             }
