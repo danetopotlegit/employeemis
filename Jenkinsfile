@@ -1,22 +1,8 @@
 /* groovylint-disable LineLength */
 pipeline {
-    
-
-    agent {
-        docker {
-            image 'python:3.10'
-            args '-u root'
-        }
-    }
+    agent any
 
     stages {
-        stage('Check Python') {
-            steps {
-                sh 'python3 --version'
-                sh 'pip --version'
-            }
-        }
-
         stage('Code Checkout') {
             steps {
                 git(
