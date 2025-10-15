@@ -1,8 +1,6 @@
 /* groovylint-disable LineLength */
 pipeline {
-    agent {
-        docker { image 'snyk/snyk:latest' }
-    }
+    agent any
 
     stages {
         stage('Code Checkout') {
@@ -30,7 +28,6 @@ pipeline {
          stage('Dependency Scan') {
             steps {
                 withCredentials([string(credentialsId: 'snyk-api-token', variable: 'snyk-api-token')]) {
-                    sh 'npm install -g snyk'
                     sh 'snyk auth $snyk-api-token'
                     sh 'snyk test'
                 }
