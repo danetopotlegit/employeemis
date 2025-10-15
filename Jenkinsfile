@@ -36,5 +36,13 @@ pipeline {
                 )
             }
         }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    docker.build("employee-mis:latest")
+                }
+            }
+        }
     }
 }
