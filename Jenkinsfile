@@ -28,7 +28,7 @@ pipeline {
         stage('Dependency Scan') {
             steps {
                 snykSecurity(
-                    snykInstallation: 'Snyk',
+                    snykInstallation: 'SnykSecurity',
                     snykTokenId: 'snyk-api-token',
                     monitorProjectOnBuild: true,
                     failOnIssues: true
