@@ -8,6 +8,7 @@ pipeline {
             args '-u root'
         }
     }
+
     stages {
         stage('Check Python') {
             steps {
@@ -15,9 +16,7 @@ pipeline {
                 sh 'pip --version'
             }
         }
-    }
 
-    stages {
         stage('Code Checkout') {
             steps {
                 git(
