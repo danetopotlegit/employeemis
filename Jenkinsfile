@@ -31,6 +31,7 @@ pipeline {
                     sh 'snyk auth $SNYK_TOKEN'
                     sh 'snyk test'
                 }
+            }
         }
     }
 }
