@@ -3,7 +3,7 @@ pipeline {
     agent any
 
     stages {
-        stage('Code Checkout') {
+        stage('Code Checkout (from Git)') {
             steps {
                 git(
                     url: 'https://github.com/danetopotlegit/employeemis.git' ,
@@ -13,7 +13,7 @@ pipeline {
             }
         }
 
-        stage('Static Code Analysis') {
+        stage('Static Code Analysis (SonarQube)') {
                 steps {
                     script {
                         def scannerHome = tool name: 'SonarScanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
@@ -25,9 +25,9 @@ pipeline {
                 }
         }
 
-        stage('Dependency Scan') {
+        stage('Dependency Scan (Snyk)') {
             steps {
-                echo("Skipping dependency scan  for now ...")
+                echo("Skipping ...")
                 /*snykSecurity(
                     snykInstallation: 'SnykSecurity',
                     snykTokenId: 'snyk-api-token',
@@ -38,11 +38,42 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Build Docker Image (Docker)') {
             steps {
-                script {
+                echo("Skipping ...")
+                /*script {
                     docker.build("employee-mis:latest")
-                }
+                }*/
+            }
+        }
+
+        stage('Container Security Scan (Trivy)') {
+            steps {
+                echo("Skipping ...")
+            }
+        }
+
+        stage('Automated Testing (Unit & Integration)') {
+            steps {
+                echo("Skipping ...")
+            }
+        }
+
+        stage('Dynamic Application Security Testing (OWASP ZAP)') {
+            steps {
+                echo("Skipping ...")
+            }
+        }
+
+        stage('Deployment (to Kubernetes or Docker host)') {
+            steps {
+                echo("Skipping ...")
+            }
+        }
+
+        stage('Post-deployment Security Scan (Port Scan/Vulnerability check) (Trivy)') {
+            steps {
+                echo("Skipping ...")
             }
         }
     }
