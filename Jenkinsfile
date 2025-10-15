@@ -15,13 +15,21 @@ pipeline {
 
         stage('Static Code Analysis') {
                 steps {
-                    script{
+                    script {
                         def scannerHome = tool name: 'SonarScanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
                          withSonarQubeEnv('SonarQubeServer') 
                          {
                             sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=employee-mis"
                          }
                     }
+                }
+        }
+
+         stage('Dependency Scan') {
+            steps {
+                withCredentials([string(credentialsId: 'snyk-api-token', variable: 'SNYK_TOKEN')]) {
+                    sh 'snyk auth $SNYK_TOKEN'
+                    sh 'snyk test'
                 }
         }
     }
