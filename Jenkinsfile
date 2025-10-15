@@ -1,5 +1,14 @@
 pipeline {
     agent any
+
+    tools {
+        sonarQubeScanner 'SonarScanner'
+    }
+
+    environment {
+        SONARQUBE_ENV = 'SonarQubeServer'
+    }
+
     stages {
         stage('Code Checkout') {
             steps {
@@ -12,7 +21,7 @@ pipeline {
         }
 
         stage('Static Code Analysis') {
-            steps { sh 'sonar-scanner -Dsonar.projectKey=employee-app' }
+            steps { sh 'SonarQubeServer -Dsonar.projectKey=employee-app' }
         }
     }
 }
