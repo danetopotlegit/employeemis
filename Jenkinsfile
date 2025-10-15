@@ -1,6 +1,8 @@
 /* groovylint-disable LineLength */
 pipeline {
-    agent any
+    agent {
+        docker { image 'snyk/snyk:latest' }
+    }
 
     stages {
         stage('Code Checkout') {
