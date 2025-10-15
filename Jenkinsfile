@@ -27,10 +27,12 @@ pipeline {
 
          stage('Dependency Scan') {
             steps {
-                withCredentials([string(credentialsId: 'snyk-api-token', variable: 'snyk-api-token')]) {
-                    sh 'snyk auth $snyk-api-token'
-                    sh 'snyk test'
-                }
+                snykSecurity(
+                    snykInstallation: 'Default',
+                    snykTokenId: 'snyk-api-token',
+                    monitorProjectOnBuild: true,
+                    failOnIssues: true
+                )
             }
         }
     }
