@@ -31,6 +31,7 @@ pipeline {
                     snykInstallation: 'SnykSecurity',
                     snykTokenId: 'snyk-api-token',
                     additionalArguments: '--all-projects',
+                    targetFile: 'requirements.txt',
                     monitorProjectOnBuild: true,
                     failOnIssues: true
                 )
