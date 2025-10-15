@@ -1,7 +1,7 @@
 /* groovylint-disable LineLength */
 pipeline {
     agent any
-    
+
     stages {
         stage('Code Checkout') {
             steps {
@@ -19,7 +19,7 @@ pipeline {
                         def scannerHome = tool name: 'SonarScanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
                          withSonarQubeEnv('SonarQubeServer') 
                          {
-                            sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=employeeMIS"
+                            sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=employee-mis"
                          }
                     }
                 }
