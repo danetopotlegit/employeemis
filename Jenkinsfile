@@ -25,6 +25,14 @@ pipeline {
                 }
         }
 
+        stage('Debug Workspace') {
+        steps {
+            sh 'pwd'
+            sh 'ls -la'
+            sh 'ls -la requirements.txt || echo "File not found here"'
+        }
+        }
+
         stage('Dependency Scan') {
             steps {
                 snykSecurity(
