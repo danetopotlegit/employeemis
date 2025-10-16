@@ -84,8 +84,10 @@ pipeline {
 
         stage('Deployment to Kubernetes') {
             agent {
-                docker { image 'bitnami/kubectl:latest' }
-                args '-v /var/run/docker.sock:/var/run/docker.sock --entrypoint=""'
+                docker { 
+                    image 'bitnami/kubectl:latest' 
+                    args '-v /var/run/docker.sock:/var/run/docker.sock --entrypoint=""'
+                }                
             }
 
             environment {
