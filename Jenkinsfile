@@ -106,6 +106,26 @@ pipeline {
             }
         }
 
+
+        stage('Preparing Kubernetes') {
+            agent {
+                docker { 
+                    image 'digitalocean/doctl:latest' 
+                    args '-v /var/run/docker.sock:/var/run/docker.sock --entrypoint=""'
+                }                
+            }         
+            steps {
+                echo 'creating new KubeConfig...'
+                withCredentials([string(credentialsId: 'do-api-token', variable: 'DO_API_TOKEN')]) {
+                    sh """
+                    doctl auth init -t $DO_API_TOKEN
+                    doctl kubernetes cluster kubeconfig save do-fra1-k8s-devseclab
+                    export KUBECONFIG=$HOME/.kube/config
+                    """
+                }
+            }
+        }        
+
         stage('Deployment to Kubernetes') {
             agent {
                 docker { 
@@ -121,9 +141,6 @@ pipeline {
                 echo 'Deploying to Kubernetes cluster...'
                 withCredentials([string(credentialsId: 'do-api-token', variable: 'DO_API_TOKEN')]) {
                     sh """
-                    doctl auth init -t $DO_API_TOKEN
-                    doctl kubernetes cluster kubeconfig save do-fra1-k8s-devseclab
-                    export KUBECONFIG=$HOME/.kube/config
                     kubectl set image deployment/employee-mis employee-mis=${DOCKER_REGISTRY}/${DOCKER_IMAGE}
                     kubectl rollout status deployment/employee-mis
                     """
