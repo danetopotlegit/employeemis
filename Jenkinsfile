@@ -68,9 +68,11 @@ pipeline {
                     args '-v /var/run/docker.sock:/var/run/docker.sock --entrypoint=""'
                 }
             }
+
             environment {
                 TRIVY_CACHE_DIR = "${WORKSPACE}/.trivycache"
             }
+
             steps {
                 sh '''
                     mkdir -p $TRIVY_CACHE_DIR
@@ -80,7 +82,13 @@ pipeline {
             }
         }
 
-        stage('Docker Hub Actions') {
+        stage('Docker Hub Actions') { 
+            environment {
+                DOCKER_IMAGE = 'employee-mis:latest'
+                DOCKER_REGISTRY = 'docker.io/danetopot'
+                DOCKER_USER = 'danetopot'
+                DOCKER_TOKEN = 'dckr_pat_ZahMfMKrSg9TtFnVWniJbGLqLQY'
+            }
             steps {
                 echo('Login to Docker Hub ..')
                 withCredentials([
@@ -117,7 +125,7 @@ pipeline {
                         '''
                 }
             }
-        }        
+        }           
 
         stage('Dynamic Application Security Testing (OWASP ZAP)') {
             steps {
