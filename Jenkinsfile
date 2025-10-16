@@ -1,6 +1,11 @@
 /* groovylint-disable LineLength */
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'aquasec/trivy:latest'  
+            args '-v /var/run/docker.sock:/var/run/docker.sock'
+        }
+    }
 
     stages {
         stage('Code Checkout (from Git)') {
@@ -54,12 +59,7 @@ pipeline {
         stage('Container Security Scan (Trivy)') {
             steps {
                 sh '''
-                    apt-get update && apt-get install -y wget tar curl
-                    wget https://github.com/aquasecurity/trivy/releases/latest/download/trivy_0.55.0_Linux-64bit.tar.gz
-                    tar zxvf trivy_0.55.0_Linux-64bit.tar.gz
-                    mv trivy /usr/local/bin/
-                    chmod +x /usr/local/bin/trivy
-                    trivy --version
+                    trivy image --severity HIGH,CRITICAL --exit-code 1 employee-mis:latest
                     '''
             }
         }
