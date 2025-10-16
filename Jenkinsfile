@@ -170,6 +170,7 @@ pipeline {
                     kubectl set image deployment/employee-app-deployment employee-app=docker.io/danetopot/employee-mis:latest
                     kubectl apply -f k8s/service.yaml
                     kubectl get svc
+                    kubectl get nodes -o wide
                     """
                 }
             }
