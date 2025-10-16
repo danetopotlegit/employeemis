@@ -166,8 +166,7 @@ pipeline {
 
                     # Verify access to cluster
                     # kubectl get nodes
-                    kubectl set image deployment/employee-mis employee-mis=${DOCKER_REGISTRY}/${DOCKER_IMAGE}
-                    kubectl rollout status deployment/employee-mis
+                    kubectl apply -f deployment.yaml
                     """
                 }
             }
