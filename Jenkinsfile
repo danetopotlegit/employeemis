@@ -86,17 +86,15 @@ pipeline {
             environment {
                 DOCKER_IMAGE = 'employee-mis:latest'
                 DOCKER_REGISTRY = 'docker.io/danetopot'
-                DOCKER_USER = 'danetopot'
-                DOCKER_TOKEN = 'dckr_pat_ZahMfMKrSg9TtFnVWniJbGLqLQY'
             }
             steps {
                 echo('Login to Docker Hub ..')
                 withCredentials([
                     usernamePassword(credentialsId: 'dockerhub-token', 
-                    usernameVariable: 'DOCKER_USER', 
-                    passwordVariable: 'DOCKER_TOKEN')]) 
+                    usernameVariable: 'docker-user', 
+                    passwordVariable: 'docker-token')]) 
                 {
-                    sh 'echo $DOCKER_TOKEN | docker login -u $DOCKER_USER --password-stdin'
+                    sh 'echo $DOCKER_TOKEN | docker login -u $docker-user --password-stdin'
                 }
 
                 echo('Tag and Push Docker Image..')
