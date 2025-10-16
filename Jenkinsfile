@@ -17,7 +17,7 @@ pipeline {
                 steps {
                     script {
                         def scannerHome = tool name: 'SonarScanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
-                         withSonarQubeEnv('SonarQubeServer') 
+                    withSonarQubeEnv('SonarQubeServer')
                          {
                             sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=employee-mis"
                          }
@@ -46,14 +46,14 @@ pipeline {
         stage('Build Docker Image (Docker)') {
             steps {
                 script {
-                    docker.build("employee-mis:latest")
+                    docker.build('employee-mis:latest')
                 }
             }
         }
 
         stage('Container Security Scan (Trivy)') {
             steps {
-                 sh '''
+                sh '''
                     echo "📥 Installing Trivy..."
                     curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh
                     mv trivy /usr/local/bin/
@@ -65,25 +65,25 @@ pipeline {
 
         stage('Automated Testing (Unit & Integration)') {
             steps {
-                echo("Skipping ...")
+                echo('Skipping ...')
             }
         }
 
         stage('Dynamic Application Security Testing (OWASP ZAP)') {
             steps {
-                echo("Skipping ...")
+                echo('Skipping ...')
             }
         }
 
         stage('Deployment (to Kubernetes or Docker host)') {
             steps {
-                echo("Skipping ...")
+                echo('Skipping ...')
             }
         }
 
         stage('Post-deployment Security Scan (Port Scan/Vulnerability check) (Trivy)') {
             steps {
-                echo("Skipping ...")
+                echo('Skipping ...')
             }
         }
     }
