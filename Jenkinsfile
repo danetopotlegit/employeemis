@@ -68,11 +68,9 @@ pipeline {
                     args '-v /var/run/docker.sock:/var/run/docker.sock --entrypoint=""'
                 }
             }
-
             environment {
                 TRIVY_CACHE_DIR = "${WORKSPACE}/.trivycache"
             }
-
             steps {
                 sh '''
                     mkdir -p $TRIVY_CACHE_DIR
@@ -82,21 +80,7 @@ pipeline {
             }
         }
 
-        stage('Deployment to Kubernetes') {
-            /*agent {
-                docker { 
-                    image 'bitnami/kubectl:latest' 
-                    args '-v /var/run/docker.sock:/var/run/docker.sock --entrypoint=""'
-                }                
-            }*/
-
-            environment {
-                DOCKER_IMAGE = 'employee-mis:latest'
-                DOCKER_REGISTRY = 'docker.io/danetopot'
-                DOCKER_USER = 'danetopot'
-                DOCKER_TOKEN = 'dckr_pat_ZahMfMKrSg9TtFnVWniJbGLqLQY'
-            }
-            
+        stage('Docker Hub Actions') {
             steps {
                 echo('Login to Docker Hub ..')
                 withCredentials([
@@ -112,8 +96,18 @@ pipeline {
                 sh "docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE}"
 
                 echo('Tag and Push Docker Image..')
-                sh "docker logout ${DOCKER_REGISTRY}"
+                sh "docker logout ${DOCKER_REGISTRY}"               
+            }
+        }
 
+        stage('Deployment to Kubernetes') {
+            agent {
+                docker { 
+                    image 'bitnami/kubectl:latest' 
+                    args '-v /var/run/docker.sock:/var/run/docker.sock --entrypoint=""'
+                }                
+            }            
+            steps {
                 echo 'Deploying to Kubernetes cluster...'
                 withCredentials([file(credentialsId: 'kubeconfig-file', variable: 'KUBECONFIG_FILE')]) {
                     sh '''
@@ -123,7 +117,7 @@ pipeline {
                         '''
                 }
             }
-        }
+        }        
 
         stage('Dynamic Application Security Testing (OWASP ZAP)') {
             steps {
