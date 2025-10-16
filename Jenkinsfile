@@ -111,7 +111,6 @@ pipeline {
             agent {
                 docker { 
                     image 'digitalocean/doctl:latest' 
-                    args '-v /var/run/docker.sock:/var/run/docker.sock --entrypoint=""'
                 }                
             }         
             steps {
