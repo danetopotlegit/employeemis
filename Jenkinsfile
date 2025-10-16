@@ -165,7 +165,7 @@ pipeline {
                     export KUBECONFIG=\$HOME/.kube/config
 
                     # Verify access to cluster
-                    kubectl get nodes
+                    # kubectl get nodes
                     kubectl set image deployment/employee-mis employee-mis=${DOCKER_REGISTRY}/${DOCKER_IMAGE}
                     kubectl rollout status deployment/employee-mis
                     """
