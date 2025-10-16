@@ -146,6 +146,9 @@ pipeline {
                     curl -sL https://github.com/digitalocean/doctl/releases/download/v1.102.0/doctl-1.102.0-linux-amd64.tar.gz | tar -xzv
                     mv doctl \$HOME/.local/bin/
                     doctl version
+                    doctl auth init -t $DO_API_TOKEN
+                    doctl kubernetes cluster kubeconfig save do-fra1-k8s-devseclab
+                    export KUBECONFIG=$HOME/.kube/config
                     '''
                 withCredentials([string(credentialsId: 'do-api-token', variable: 'DO_API_TOKEN')]) {
                     sh """
