@@ -115,12 +115,15 @@ pipeline {
             }            
             steps {
                 echo 'Deploying to Kubernetes cluster...'
-                withCredentials([file(credentialsId: 'kubeconfig-file', variable: 'KUBECONFIG_FILE')]) {
-                    sh '''
-                        export KUBECONFIG=$KUBECONFIG_FILE
-                        kubectl set image deployment/employee-mis employee-mis=docker.io/danetopot/employee-mis:latest
-                        kubectl rollout status deployment/employee-mis
-                        '''
+
+                withCredentials([string(credentialsId: 'do-api-token', variable: 'DO_API_TOKEN')]) {
+                    sh """
+                    doctl auth init -t $DO_API_TOKEN
+                    doctl kubernetes cluster kubeconfig save do-fra1-k8s-devseclab
+                    export KUBECONFIG=$HOME/.kube/config
+                    kubectl set image deployment/employee-mis employee-mis=${DOCKER_REGISTRY}/${DOCKER_IMAGE}
+                    kubectl rollout status deployment/employee-mis
+                    """
                 }
             }
         }           
