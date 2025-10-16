@@ -107,13 +107,25 @@ pipeline {
                 echo('Tag and Push Docker Image..')
                 sh "docker logout ${DOCKER_REGISTRY}"
 
+
+                sh '''
+                    #!/bin/bash
+                    if ! command -v kubectl &> /dev/null; then
+                        echo "kubectl not found. Installing..."
+                        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+                        chmod +x kubectl
+                        mv kubectl /usr/local/bin/
+                    else
+                        echo "kubectl is already installed."
+                    fi
+                    kubectl version --client
+                '''
+
                 echo 'Deploying to Kubernetes cluster...'
                 withCredentials([file(credentialsId: 'kubeconfig-file', variable: 'KUBECONFIG_FILE')]) {
                     sh '''
                         export KUBECONFIG=$KUBECONFIG_FILE
-                        # Update the deployment image
                         kubectl set image deployment/employee-mis employee-mis=docker.io/danetopot/employee-mis:latest
-                        # Wait for rollout to complete
                         kubectl rollout status deployment/employee-mis
                         '''
                 }
