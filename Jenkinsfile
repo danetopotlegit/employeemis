@@ -73,18 +73,12 @@ pipeline {
         }
 
         stage('Automated Testing (Unit & Integration)') {
-            agent {
-                docker {
-                    image 'python:3.11-slim'
-                }
-            }
-            
             steps {
                 sh '''
                     pip install --upgrade pip --break-system-packages
-                    pip install flask flask_sqlalchemy pytest --break-system-packages
+                    pip install -r requirements.txt --break-system-packages
                     pytest -v --maxfail=1 --disable-warnings
-                '''
+                    '''
             }
         }
 
