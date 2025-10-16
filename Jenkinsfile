@@ -159,7 +159,7 @@ pipeline {
                     doctl auth init -t $DO_API_TOKEN
 
                     # Save kubeconfig for your cluster
-                    doctl kubernetes cluster kubeconfig save do-fra1-k8s-devseclab
+                    doctl kubernetes cluster kubeconfig save k8s-devseclab
 
                     # Set KUBECONFIG so kubectl can use it
                     export KUBECONFIG=\$HOME/.kube/config
