@@ -92,9 +92,11 @@ pipeline {
             
             steps {
                 echo('Login to Docker Hub ..')
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-token', 
-                                                  usernameVariable: ${DOCKER_USER}, 
-                                                  passwordVariable: ${DOCKER_TOKEN})]) {
+                withCredentials([
+                    usernamePassword(credentialsId: 'dockerhub-token', 
+                    usernameVariable: 'DOCKER_USER', 
+                    passwordVariable: 'DOCKER_TOKEN')]) 
+                {
                     sh 'echo $DOCKER_TOKEN | docker login -u $DOCKER_USER --password-stdin'
                 }
             }
