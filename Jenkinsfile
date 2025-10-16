@@ -86,8 +86,6 @@ pipeline {
             environment {
                 DOCKER_IMAGE = 'employee-mis:latest'
                 DOCKER_REGISTRY = 'docker.io/danetopot'
-                DOCKER_USER = 'employee-mis:latest'
-                DOCKER_TOKEN = 'dckr_pat_ZahMfMKrSg9TtFnVWniJbGLqLQY'
             }
             steps {
                 echo('Login to Docker Hub ..')
