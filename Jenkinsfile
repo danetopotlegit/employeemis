@@ -61,8 +61,8 @@ pipeline {
 
             environment {
                 TRIVY_CACHE_DIR = "${WORKSPACE}/.trivycache"
-            }
-            
+            } 
+
             steps {
                 sh '''
                     mkdir -p $TRIVY_CACHE_DIR
@@ -73,11 +73,17 @@ pipeline {
         }
 
         stage('Automated Testing (Unit & Integration)') {
+            agent {
+                docker {
+                    image 'python:3.11-slim'
+                }
+            }
+            
             steps {
                 sh '''
                     pip install --upgrade pip --break-system-packages
                     pip install flask flask_sqlalchemy pytest --break-system-packages
-                    pytest -v
+                    pytest -v --maxfail=1 --disable-warnings
                 '''
             }
         }
