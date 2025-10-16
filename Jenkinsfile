@@ -139,7 +139,7 @@ pipeline {
             steps {
                 echo 'Deploying to Kubernetes cluster...'
                 sh '''                   
-                    curl -sL https://github.com/digitalocean/doctl/releases/latest/download/doctl-linux-amd64.tar.gz -o doctl.tar.gz
+                    curl -sL https://github.com/digitalocean/doctl/releases/download/v1.102.0/doctl-1.102.0-linux-amd64.tar.gz | tar -xzv
                     tar -xvzf doctl.tar.gz
                     mv doctl /usr/local/bin/
                     doctl version
