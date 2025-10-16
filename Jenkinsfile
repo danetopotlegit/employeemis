@@ -54,8 +54,10 @@ pipeline {
         stage('Container Security Scan (Trivy)') {
             steps {
                 sh '''
-                    echo "📥 Installing Trivy..."
-                    curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh
+                    echo "📥 Downloading Trivy..."
+                    apt-get update && apt-get install -y wget tar
+                    wget https://github.com/aquasecurity/trivy/releases/latest/download/trivy_0.55.0_Linux-64bit.tar.gz
+                    tar zxvf trivy_0.55.0_Linux-64bit.tar.gz
                     mv trivy /usr/local/bin/
                     chmod +x /usr/local/bin/trivy
                     trivy --version
