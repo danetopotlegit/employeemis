@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: employee-app
-        image: employee-app:latest
+        image: docker.io/danetopot/employee-app:latest
         ports:
         - containerPort: 5000
         env:

@@ -82,7 +82,7 @@ pipeline {
             }
         }
 
-        stage('Deployment to Kubernetes or Docker host') {
+        stage('Deployment to Kubernetes') {
             environment {
                 DOCKER_IMAGE = 'employee-mis:latest'
                 DOCKER_REGISTRY = 'docker.io/danetopot'
@@ -106,6 +106,17 @@ pipeline {
 
                 echo('Tag and Push Docker Image..')
                 sh "docker logout ${DOCKER_REGISTRY}"
+
+                echo 'Deploying to Kubernetes cluster...'
+                withCredentials([file(credentialsId: 'kubeconfig-file', variable: 'KUBECONFIG_FILE')]) {
+                    sh '''
+                        export KUBECONFIG=$KUBECONFIG_FILE
+                        # Update the deployment image
+                        kubectl set image deployment/employee-mis employee-mis=docker.io/danetopot/employee-mis:latest
+                        # Wait for rollout to complete
+                        kubectl rollout status deployment/employee-mis
+                        '''
+                }
             }
         }
 
