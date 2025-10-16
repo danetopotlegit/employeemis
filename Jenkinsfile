@@ -167,7 +167,7 @@ pipeline {
                     # Verify access to cluster
                     # kubectl get nodes
                     kubectl apply -f k8s/deployment.yaml
-                    kubectl set image deployment/employee-app-deployment employee-mis=docker.io/danetopot/employee-mis:latest
+                    kubectl set image deployment/employee-app-deployment employee-app=docker.io/danetopot/employee-mis:latest
                     """
                 }
             }
