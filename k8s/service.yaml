@@ -1,12 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: employee-app-service
+   name: employee-mis
+   namespace: default
 spec:
   selector:
-    app: employee-app
+    app: employee-mis
   ports:
     - protocol: TCP
       port: 80
       targetPort: 5000
-  type: ClusterIP
+  type: LoadBalancer
