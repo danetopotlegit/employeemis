@@ -83,6 +83,10 @@ pipeline {
         }
 
         stage('Deployment to Kubernetes') {
+            agent {
+                docker { image 'bitnami/kubectl:latest' }
+            }
+            
             environment {
                 DOCKER_IMAGE = 'employee-mis:latest'
                 DOCKER_REGISTRY = 'docker.io/danetopot'
@@ -106,20 +110,6 @@ pipeline {
 
                 echo('Tag and Push Docker Image..')
                 sh "docker logout ${DOCKER_REGISTRY}"
-
-
-                sh '''
-                    #!/bin/bash
-                    if ! command -v kubectl &> /dev/null; then
-                        echo "kubectl not found. Installing..."
-                        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-                        chmod +x kubectl
-                        mv kubectl /usr/local/bin/
-                    else
-                        echo "kubectl is already installed."
-                    fi
-                    kubectl version --client
-                '''
 
                 echo 'Deploying to Kubernetes cluster...'
                 withCredentials([file(credentialsId: 'kubeconfig-file', variable: 'KUBECONFIG_FILE')]) {
