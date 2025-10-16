@@ -112,10 +112,13 @@ pipeline {
                     image 'bitnami/kubectl:latest' 
                     args '-v /var/run/docker.sock:/var/run/docker.sock --entrypoint=""'
                 }                
+            }
+            environment {
+                DOCKER_IMAGE = 'employee-mis:latest'
+                DOCKER_REGISTRY = 'docker.io/danetopot'
             }            
             steps {
                 echo 'Deploying to Kubernetes cluster...'
-
                 withCredentials([string(credentialsId: 'do-api-token', variable: 'DO_API_TOKEN')]) {
                     sh """
                     doctl auth init -t $DO_API_TOKEN
