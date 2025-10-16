@@ -58,9 +58,14 @@ pipeline {
                     args '-v /var/run/docker.sock:/var/run/docker.sock --entrypoint=""'
                 }
             }
+
+            environment {
+                TRIVY_CACHE_DIR = "${WORKSPACE}/.trivycache"
+            }
             
             steps {
                 sh '''
+                    mkdir -p $TRIVY_CACHE_DIR
                     trivy --version
                     trivy image --severity HIGH,CRITICAL --exit-code 1 my-app:latest
                     '''
