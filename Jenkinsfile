@@ -1,11 +1,6 @@
 /* groovylint-disable LineLength */
 pipeline {
-    agent {
-        docker {
-            image 'aquasec/trivy:latest'  
-            args '-v /var/run/docker.sock:/var/run/docker.sock --entrypoint=""'
-        }
-    }
+    agent any
 
     stages {
         stage('Code Checkout (from Git)') {
@@ -57,9 +52,17 @@ pipeline {
         }
 
         stage('Container Security Scan (Trivy)') {
+            agent {
+                docker {
+                    image 'aquasec/trivy:latest'
+                    args '-v /var/run/docker.sock:/var/run/docker.sock --entrypoint=""'
+                }
+            }
+            
             steps {
                 sh '''
-                    trivy image --severity HIGH,CRITICAL --exit-code 1 employee-mis:latest
+                    trivy --version
+                    trivy image --severity HIGH,CRITICAL --exit-code 1 my-app:latest
                     '''
             }
         }
