@@ -54,10 +54,12 @@ pipeline {
         stage('Container Security Scan (Trivy)') {
             steps {
                  sh '''
-                  curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh
-                  sudo mv trivy /usr/local/bin/
-                  trivy --version
-                '''
+                    echo "📥 Installing Trivy..."
+                    curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh
+                    mv trivy /usr/local/bin/
+                    chmod +x /usr/local/bin/trivy
+                    trivy --version
+                    '''
             }
         }
 
