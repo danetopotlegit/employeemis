@@ -74,7 +74,11 @@ pipeline {
 
         stage('Automated Testing (Unit & Integration)') {
             steps {
-                echo('Skipping ...')
+                sh '''
+                    pip install --upgrade pip
+                    pip install flask flask_sqlalchemy pytest
+                    pytest -v
+                '''
             }
         }
 
