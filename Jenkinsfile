@@ -27,9 +27,12 @@ pipeline {
 
         stage('Dependency Scan (Snyk)') {
             steps {
-                sh 'pip install -r requirements.txt'
-            }
-            steps {
+                sh '''
+                    echo "Installing Python dependencies..."
+                    pip install --upgrade pip
+                    pip install -r requirements.txt
+                    '''
+
                 snykSecurity(
                     snykInstallation: 'SnykSecurity',
                     snykTokenId: 'snyk-api-token',
