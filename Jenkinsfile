@@ -94,7 +94,7 @@ pipeline {
                     usernameVariable: 'docker-user', 
                     passwordVariable: 'docker-token')]) 
                 {
-                    sh 'echo $DOCKER_TOKEN | docker login -u $docker-user --password-stdin'
+                    sh 'echo $docker-token | docker login -u $docker-user --password-stdin'
                 }
 
                 echo('Tag and Push Docker Image..')
