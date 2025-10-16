@@ -27,7 +27,6 @@ pipeline {
 
         stage('Dependency Scan (Snyk)') {
             steps {
-                echo("Skipping ...")
                 snykSecurity(
                     snykInstallation: 'SnykSecurity',
                     snykTokenId: 'snyk-api-token',
@@ -40,10 +39,9 @@ pipeline {
 
         stage('Build Docker Image (Docker)') {
             steps {
-                echo("Skipping ...")
-                /*script {
+                script {
                     docker.build("employee-mis:latest")
-                }*/
+                }
             }
         }
 
