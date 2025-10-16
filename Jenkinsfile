@@ -3,7 +3,7 @@ pipeline {
     agent {
         docker {
             image 'aquasec/trivy:latest'  
-            args '-v /var/run/docker.sock:/var/run/docker.sock'
+            args '-v /var/run/docker.sock:/var/run/docker.sock --entrypoint=""'
         }
     }
 
@@ -22,10 +22,10 @@ pipeline {
                 steps {
                     script {
                         def scannerHome = tool name: 'SonarScanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
-                    withSonarQubeEnv('SonarQubeServer')
-                         {
+                        withSonarQubeEnv('SonarQubeServer')
+                        {
                             sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=employee-mis"
-                         }
+                        }
                     }
                 }
         }
