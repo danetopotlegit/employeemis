@@ -138,12 +138,12 @@ pipeline {
             }            
             steps {
                 echo 'Deploying to Kubernetes cluster...'
-                sh '''   
+                sh '''
                     export USER=jenkins
                     export HOME=/tmp
                     export PATH=\$HOME/.local/bin:\$PATH
-                    mkdir -p \$HOME/.local/bin
-                    curl -sL https://github.com/digitalocean/doctl/releases/latest/download/doctl-linux-amd64.tar.gz | tar -xzv
+                    mkdir -p \$HOME/.local/bin                   
+                    curl -sL https://github.com/digitalocean/doctl/releases/download/v1.102.0/doctl-1.102.0-linux-amd64.tar.gz | tar -xzv
                     mv doctl \$HOME/.local/bin/
                     doctl version
                     '''
