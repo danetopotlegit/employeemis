@@ -107,7 +107,7 @@ pipeline {
         }
 
 
-        stage('Preparing Kubernetes') {
+        /*stage('Preparing Kubernetes') {
             agent {
                 docker { 
                     image 'digitalocean/doctl:latest' 
@@ -123,7 +123,7 @@ pipeline {
                     """
                 }
             }
-        }        
+        }   */    
 
         stage('Deployment to Kubernetes') {
             agent {
@@ -138,6 +138,13 @@ pipeline {
             }            
             steps {
                 echo 'Deploying to Kubernetes cluster...'
+
+                 sh """
+                    curl -sL https://github.com/digitalocean/doctl/releases/latest/download/doctl-$(uname -s)-$(uname -m).tar.gz -o doctl.tar.gz
+                    tar -xvzf doctl.tar.gz
+                    mv doctl /usr/local/bin/
+                    doctl version
+                    """
                 withCredentials([string(credentialsId: 'do-api-token', variable: 'DO_API_TOKEN')]) {
                     sh """
                     kubectl set image deployment/employee-mis employee-mis=${DOCKER_REGISTRY}/${DOCKER_IMAGE}
