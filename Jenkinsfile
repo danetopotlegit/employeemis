@@ -67,7 +67,7 @@ pipeline {
                 sh '''
                     mkdir -p $TRIVY_CACHE_DIR
                     trivy --version
-                    trivy image --severity HIGH,CRITICAL --exit-code 1 my-app:latest
+                    trivy image --severity HIGH,CRITICAL --exit-code 1 employee-mis:latest
                     '''
             }
         }
