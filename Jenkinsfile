@@ -84,7 +84,7 @@ pipeline {
 
         stage('Dynamic Application Security Testing (OWASP ZAP)') {
             steps {
-                echo('Skipping ...')
+                echo('Skipping ....')
             }
         }
 
