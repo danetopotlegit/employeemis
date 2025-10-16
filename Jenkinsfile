@@ -76,7 +76,7 @@ pipeline {
             steps {
                 sh '''
                     pip install --upgrade pip --break-system-packages
-                    pip install -r requirements.txt --break-system-packages
+                    pip install pytest flask flask_sqlalchemy --break-system-packages
                     pytest -v --maxfail=1 --disable-warnings
                     '''
             }
