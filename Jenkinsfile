@@ -137,21 +137,35 @@ pipeline {
                 DOCKER_REGISTRY = 'docker.io/danetopot'
             }            
             steps {
-                echo 'Deploying to Kubernetes cluster...'
-                sh '''
+                echo 'Installing doctl and preparing kubeconfig...'
+                withCredentials([string(credentialsId: 'do-api-token', variable: 'DO_API_TOKEN')]) {
+                    sh """
+                    # Set environment for non-root container
                     export USER=jenkins
                     export HOME=/tmp
                     export PATH=\$HOME/.local/bin:\$PATH
-                    mkdir -p \$HOME/.local/bin                   
+
+                    # Create a writable bin directory
+                    mkdir -p \$HOME/.local/bin
+
+                    # Download and extract doctl
                     curl -sL https://github.com/digitalocean/doctl/releases/download/v1.102.0/doctl-1.102.0-linux-amd64.tar.gz | tar -xzv
                     mv doctl \$HOME/.local/bin/
+
+                    # Verify installation
                     doctl version
+
+                    # Authenticate to DigitalOcean
                     doctl auth init -t $DO_API_TOKEN
+
+                    # Save kubeconfig for your cluster
                     doctl kubernetes cluster kubeconfig save do-fra1-k8s-devseclab
-                    export KUBECONFIG=$HOME/.kube/config
-                    '''
-                withCredentials([string(credentialsId: 'do-api-token', variable: 'DO_API_TOKEN')]) {
-                    sh """
+
+                    # Set KUBECONFIG so kubectl can use it
+                    export KUBECONFIG=\$HOME/.kube/config
+
+                    # Verify access to cluster
+                    kubectl get nodes
                     kubectl set image deployment/employee-mis employee-mis=${DOCKER_REGISTRY}/${DOCKER_IMAGE}
                     kubectl rollout status deployment/employee-mis
                     """
