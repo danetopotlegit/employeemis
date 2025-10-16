@@ -43,6 +43,16 @@ pipeline {
             }
         }
 
+        stage('Automated Testing (Unit & Integration)') {
+            steps {
+                sh '''
+                    pip install --upgrade pip --break-system-packages
+                    pip install -r requirements.txt --break-system-packages
+                    python3 -m pytest -v --maxfail=1 --disable-warnings
+                    '''
+            }
+        }
+
         stage('Build Docker Image (Docker)') {
             steps {
                 script {
@@ -61,7 +71,7 @@ pipeline {
 
             environment {
                 TRIVY_CACHE_DIR = "${WORKSPACE}/.trivycache"
-            } 
+            }
 
             steps {
                 sh '''
@@ -72,25 +82,27 @@ pipeline {
             }
         }
 
-        stage('Automated Testing (Unit & Integration)') {
+        stage('Deployment to Kubernetes or Docker host') {
+            environment {
+                DOCKER_IMAGE = 'employee-mis:latest'
+                DOCKER_REGISTRY = 'docker.io/danetopot'
+                DOCKER_USER = 'danetopot'
+                DOCKER_TOKEN = 'dckr_pat_ZahMfMKrSg9TtFnVWniJbGLqLQY'
+            }
+            
             steps {
-                sh '''
-                    pip install --upgrade pip --break-system-packages
-                    pip install -r requirements.txt --break-system-packages
-                    python3 -m pytest -v --maxfail=1 --disable-warnings
-                    '''
+                echo('Login to Docker Hub ..')
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-token', 
+                                                  usernameVariable: ${DOCKER_USER}, 
+                                                  passwordVariable: ${DOCKER_TOKEN})]) {
+                    sh 'echo $DOCKER_TOKEN | docker login -u $DOCKER_USER --password-stdin'
+                }
             }
         }
 
         stage('Dynamic Application Security Testing (OWASP ZAP)') {
             steps {
                 echo('Skipping ....')
-            }
-        }
-
-        stage('Deployment (to Kubernetes or Docker host)') {
-            steps {
-                echo('Skipping ...')
             }
         }
 
