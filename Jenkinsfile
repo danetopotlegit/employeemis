@@ -28,8 +28,9 @@ pipeline {
         stage('Dependency Scan (Snyk)') {
             steps {
                 sh '''
-                    echo "Installing Python dependencies..."
-                    pip install -r requirements.txt
+                    echo "Installing Python dependencies (forcing system install)..."
+                    pip install --upgrade pip --break-system-packages
+                    pip install -r requirements.txt --break-system-packages
                     '''
 
                 snykSecurity(
