@@ -97,6 +97,9 @@ pipeline {
                     sh 'echo $DOCKER_TOKEN | docker login -u $DOCKER_USER --password-stdin'
                 }
 
+                echo('Build Docker Image..')
+                sh "docker build -t danetopot/${DOCKER_IMAGE}"
+
                 echo('Tag and Push Docker Image..')
                 sh "docker tag ${DOCKER_IMAGE} ${DOCKER_REGISTRY}/${DOCKER_IMAGE}"
                 sh "docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE}"
