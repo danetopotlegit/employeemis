@@ -175,6 +175,7 @@ pipeline {
                     kubectl get nodes -o wide
                     kubectl get deployments
                     kubectl get pods -o wide
+                    kubectl logs employee-app-deployment-6d676cc848-fb9v4
                     """
                 }
             }
