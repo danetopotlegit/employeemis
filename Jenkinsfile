@@ -169,8 +169,10 @@ pipeline {
                     kubectl apply -f k8s/deployment.yaml
                     kubectl set image deployment/employee-app-deployment employee-app=docker.io/danetopot/employee-mis:latest
                     kubectl apply -f k8s/service.yaml
+                    kubectl version --client
                     kubectl get svc
                     kubectl get nodes -o wide
+                    kubectl get deployments
                     """
                 }
             }
