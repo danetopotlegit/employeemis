@@ -163,6 +163,7 @@ pipeline {
 
                     # Set KUBECONFIG so kubectl can use it
                     export KUBECONFIG=\$HOME/.kube/config
+                    kubectl config current-context
 
                     # Verify access to cluster
                     # kubectl get nodes
