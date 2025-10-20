@@ -174,6 +174,7 @@ pipeline {
                     kubectl get svc
                     kubectl get nodes -o wide
                     kubectl get deployments
+                    kubectl get pods -o wide
                     """
                 }
             }
