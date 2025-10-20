@@ -5,7 +5,7 @@ metadata:
    namespace: default
 spec:
   selector:
-    app: employee-mis
+    app: employee-app
   ports:
     - protocol: TCP
       port: 80
