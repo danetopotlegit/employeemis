@@ -101,12 +101,11 @@ pipeline {
             steps {
 
                     sh """
-                    #!/bin/bash
-                    set -x
-                    echo "DO_TOKEN $DO_TOKEN"
-                    echo "SSH_KEY $SSH_KEY"
-                    """
-
+                        #!/bin/bash
+                        set -x
+                        echo "DO_TOKEN $DO_TOKEN"
+                        echo "SSH_KEY $SSH_KEY"
+                        """
                     
                     dir('terraform') {
                         sh """
