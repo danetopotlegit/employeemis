@@ -46,7 +46,7 @@ pipeline {
         stage('Automated Testing (Unit & Integration)') {
             environment {
                 DO_TOKEN = 'do-api-token'
-                SSH_KEY = 'do-private-key')
+                SSH_KEY = 'do-private-key'
             }
             
             steps {
