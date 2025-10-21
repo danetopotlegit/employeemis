@@ -2,6 +2,6 @@ variable "do_token" {
   description = "DigitalOcean API token"
 }
 
-variable "ssh_fingerprint" {
+variable "do-ssh-key" {
   description = "SSH key fingerprint added to DigitalOcean account"
 }
