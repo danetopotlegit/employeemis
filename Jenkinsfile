@@ -105,7 +105,7 @@ pipeline {
                         set -x
                         echo "Checking environment variables..."
                         echo "DO_TOKEN prefix: $(echo "$DO_TOKEN" | cut -c1-20)"
-                        echo "SSH_KEY: $SSH_KEY"
+                        echo "SSH_KEY prefix: $(echo "$SSH_KEY" | cut -c1-20)"
                         '''
                     
                     dir('terraform') {
