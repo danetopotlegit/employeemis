@@ -205,10 +205,10 @@ pipeline {
                     # Verify installation
                     doctl version
 
-                    doctl compute ssh-key list
-
                     # Authenticate to DigitalOcean
                     doctl auth init -t $DO_API_TOKEN
+
+                    doctl compute ssh-key list
 
                     # Save kubeconfig for your cluster
                     doctl kubernetes cluster kubeconfig save k8s-devseclab
