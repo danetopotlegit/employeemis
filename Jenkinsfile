@@ -87,6 +87,7 @@ pipeline {
 
                     terraform -v
 
+                    cd terraform
                     terraform init
                     terraform apply -auto-approve -var "do_token=$DO_TOKEN" -var "ssh_fingerprint=$SSH_KEY"
                     '''
