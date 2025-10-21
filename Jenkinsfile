@@ -96,10 +96,12 @@ pipeline {
                 DO_TOKEN = 'do-api-token'
                 SSH_KEY = 'do-private-key'
             }
-            
+
             steps {
                 dir('terraform') {
                     sh '''
+                    export HOME=/tmp
+                    export PATH=\$HOME/.local/bin:\$PATH   
                     terraform init
                     terraform apply -auto-approve \
                     -var "do_token=$DO_TOKEN" \
