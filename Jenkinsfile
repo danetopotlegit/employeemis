@@ -97,7 +97,7 @@ pipeline {
                 DO_TOKEN = credentials('do-api-token')
                 SSH_KEY = credentials('do-ssh-key')
             }          
-
+            /*
             steps {
                 dir('terraform') {
                     sh """
@@ -116,7 +116,7 @@ pipeline {
                         -var "ssh_fingerprint=${SSH_KEY}"
                     """
                 }
-            }
+            }*/
         }
 
         stage('Build Docker Image (Docker)') {
