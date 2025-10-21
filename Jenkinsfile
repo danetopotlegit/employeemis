@@ -102,7 +102,8 @@ pipeline {
                     sh '''
                     #!/bin/bash
                     set -e
-                    echo "DO_TOKEN is: ${DO_TOKEN:0:6}"
+                    echo "DO_TOKEN prefix: $(echo $DO_TOKEN | cut -c1-6)********"
+                    echo "SSH_KEY prefix:  $(echo $SSH_KEY | cut -c1-6)********"
                     export HOME=/tmp
                     export PATH=\$HOME/.local/bin:\$PATH   
                     terraform init
