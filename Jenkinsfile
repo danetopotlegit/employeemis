@@ -100,7 +100,7 @@ pipeline {
 
             steps {
                 dir('terraform') {
-                    sh '''
+                    sh """
                     #!/bin/bash
                     set -x
                     echo "DO_TOKEN $DO_TOKEN"
@@ -114,7 +114,7 @@ pipeline {
                     terraform apply -auto-approve \
                         -var "do-api-token=${DO_TOKEN}" \
                         -var "ssh_fingerprint=${SSH_KEY}"
-                    '''
+                    """
                 }
             }
         }
