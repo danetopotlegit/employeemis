@@ -129,13 +129,12 @@ pipeline {
                     sshagent (credentials: ['jenkins-ssh-key']) {
                     sh '''
                         ssh -o StrictHostKeyChecking=no root@104.248.36.175 << 'EOF'
-                            apt update -y
-                            apt install -y python3 python3-pip
-                            python3 -m pip install --upgrade pip --break-system-packages
-                            python3 -m pip install -r requirements.txt --break-system-packages
-                            python3 -m pytest -v --maxfail=1 --disable-warnings
-                        EOF
-                    '''
+                        apt update -y
+                        apt install -y python3 python3-pip
+                        python3 -m pip install --upgrade pip
+                        python3 -m pip install -r requirements.txt
+                        python3 -m pytest -v --maxfail=1 --disable-warnings
+                        '''
                 }
             }
         }
