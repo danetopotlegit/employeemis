@@ -91,7 +91,7 @@ pipeline {
                 sh '''
                     pip install --upgrade pip --break-system-packages
                     pip install -r requirements.txt --break-system-packages
-                    python3 -m pytest -v --maxfail=1 --disable-warnings<<<<<<< HEAD
+                    python3 -m pytest -v --maxfail=1 --disable-warnings
                     '''
             }
         }
