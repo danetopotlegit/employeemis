@@ -100,7 +100,7 @@ pipeline {
             steps {
                 dir('terraform') {
                     sh '''
-                    echo('DO_TOKEN is: ${DO_TOKEN:0:6}')
+                    echo "DO_TOKEN is: ${DO_TOKEN:0:6}"
                     export HOME=/tmp
                     export PATH=\$HOME/.local/bin:\$PATH   
                     terraform init
