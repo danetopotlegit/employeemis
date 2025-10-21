@@ -96,7 +96,6 @@ pipeline {
             environment {
                 DO_TOKEN = credentials('do-api-token')
                 SSH_KEY = credentials('do-ssh-key')
-                PUBLIC_KEY = credentials('jenkins-ssh-key')
             }          
             
             steps {
@@ -127,7 +126,7 @@ pipeline {
                         """
                     }
 
-                    sshagent (credentials: [${SSH_KEY}]) {
+                    sshagent (credentials: ['jenkins-ssh-key']) {
                     sh '''ssh -o StrictHostKeyChecking=no root@104.248.36.175 "hostname && whoami"'''
                 }
             }
