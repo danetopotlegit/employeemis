@@ -43,12 +43,7 @@ pipeline {
             }
         }
 
-        stage('Automated Testing (Unit & Integration)') {
-            environment {
-                DO_TOKEN = 'do-api-token'
-                SSH_KEY = 'do-private-key'
-            }
-            
+        stage('Automated Testing (Unit & Integration)') {          
             steps {
                 echo('Install Terraform tp provide VM to run tests ..')
                 sh '''
@@ -97,6 +92,11 @@ pipeline {
         }
 
         stage('Provision VM with Terraform') {
+            environment {
+                DO_TOKEN = 'do-api-token'
+                SSH_KEY = 'do-private-key'
+            }
+            
             steps {
                 dir('terraform') {
                     sh '''
