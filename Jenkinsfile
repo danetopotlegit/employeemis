@@ -110,10 +110,10 @@ pipeline {
                     terraform init
                     terraform plan \
                         -var "do-api-token=${DO_TOKEN}" \
-                        -var "do-ssh-key=${SSH_KEY}"
+                        -var "ssh_fingerprint=${SSH_KEY}"
                     terraform apply -auto-approve \
                         -var "do-api-token=${DO_TOKEN}" \
-                        -var "do-ssh-key=${SSH_KEY}"
+                        -var "ssh_fingerprint=${SSH_KEY}"
                     '''
                 }
             }
