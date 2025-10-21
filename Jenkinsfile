@@ -45,6 +45,33 @@ pipeline {
 
         stage('Automated Testing (Unit & Integration)') {
             steps {
+                echo('Install Terraform tp provide VM to run tests ..')
+                sh '''
+                    #!/bin/bash
+                    set -e
+
+                    echo "Installing Terraform..."
+                    # Set environment for non-root container                
+                    TERRAFORM_VERSION="1.9.8"
+                    export USER=jenkins
+                    export HOME=/tmp
+                    export PATH=\$HOME/.local/bin:\$PATH   
+
+                    # Create a writable bin directory
+                    mkdir -p \$HOME/.local/bin
+
+                    # Download Terraform binary
+                    curl -fsSL https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip -o terraform.zip
+
+                    # Unzip and move to /$HOME/local/bin
+                    unzip -o terraform.zip
+                    mv terraform \$HOME/.local/bin/
+                    rm terraform.zip
+
+                    terraform -v
+                    '''
+
+
                 sh '''
                     pip install --upgrade pip --break-system-packages
                     pip install -r requirements.txt --break-system-packages
