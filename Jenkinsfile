@@ -94,7 +94,7 @@ pipeline {
         stage('Provision VM with Terraform') {
             environment {
                 DO_TOKEN = 'do-api-token'
-                SSH_KEY = 'do-private-key'
+                SSH_KEY = 'do-ssh-key'
             }
 
             steps {
@@ -105,10 +105,10 @@ pipeline {
                     terraform init
                     terraform plan \
                         -var "do_token=$DO_TOKEN" \
-                        -var "ssh_fingerprint=$SSH_KEY"
+                        -var "do-ssh-key=$SSH_KEY"
                     terraform apply -auto-approve \
                         -var "do_token=$DO_TOKEN" \
-                        -var "ssh_fingerprint=$SSH_KEY"
+                        -var "do-ssh-key=$SSH_KEY"
                     '''
                 }
             }
