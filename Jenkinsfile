@@ -45,7 +45,7 @@ pipeline {
 
         stage('Automated Testing (Unit & Integration)') {          
             steps {
-                echo('Install Terraform tp provide VM to run tests ..')
+                echo('Install Terraform to provide VM to run tests ..')
                 sh '''
                     #!/bin/bash
                     set -e

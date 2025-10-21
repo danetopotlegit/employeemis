@@ -8,7 +8,7 @@ terraform {
 }
 
 provider "digitalocean" {
-  token = var.ssh_fingerprint
+  token = var.do-api-token
 }
 
 resource "digitalocean_droplet" "jenkins_vm" {
