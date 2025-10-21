@@ -104,10 +104,10 @@ pipeline {
                     export PATH=\$HOME/.local/bin:\$PATH   
                     terraform init
                     terraform plan \
-                        -var "do_token=$DO_TOKEN" \
+                        -var "do-api-token=$DO_TOKEN" \
                         -var "do-ssh-key=$SSH_KEY"
                     terraform apply -auto-approve \
-                        -var "do_token=$DO_TOKEN" \
+                        -var "do-api-token=$DO_TOKEN" \
                         -var "do-ssh-key=$SSH_KEY"
                     '''
                 }

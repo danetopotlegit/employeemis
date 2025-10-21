@@ -1,4 +1,4 @@
-variable "do_token" {
+variable "do-api-token" {
   description = "DigitalOcean API token"
 }
 
