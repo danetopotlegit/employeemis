@@ -100,13 +100,13 @@ pipeline {
             
             steps {
 
-                    sh """
+                    sh '''
                         #!/bin/bash
                         set -x
                         echo "Checking environment variables..."
                         echo "DO_TOKEN prefix: $(echo "$DO_TOKEN" | cut -c1-8)"
                         echo "SSH_KEY: $SSH_KEY"
-                        """
+                        '''
                     
                     dir('terraform') {
                         sh """
