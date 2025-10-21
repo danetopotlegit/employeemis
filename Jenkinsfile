@@ -134,7 +134,7 @@ pipeline {
                         apt install -y python3 python3-pip
                         python3 -m pip install --upgrade pip --break-system-packages
                         python3 -m pip install -r /root/project/requirements.txt --break-system-packages
-                        python3 -m pip install pytest --break-system-packages
+                        python3 -m pip install Flask Flask-SQLAlchemy pytest --break-system-packages
                         python3 -m pytest -v /root/project --maxfail=1 --disable-warnings
                         '''
                 }
