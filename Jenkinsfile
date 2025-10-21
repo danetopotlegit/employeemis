@@ -127,7 +127,7 @@ pipeline {
                         """
                     }
 
-                    sshagent (credentials: ['do-ssh-key']) {
+                    sshagent (credentials: [${SSH_KEY}]) {
                     sh '''ssh -o StrictHostKeyChecking=no root@104.248.36.175 "hostname && whoami"'''
                 }
             }
