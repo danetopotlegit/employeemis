@@ -94,18 +94,6 @@ pipeline {
                     python3 -m pytest -v --maxfail=1 --disable-warnings<<<<<<< HEAD
                     '''
             }
-
-            steps {
-                dir('terraform') {
-                    sh '''
-                        echo "Provision VM with Terraform..."
-                        terraform init
-                        terraform apply -auto-approve \
-                          -var "do_token=$DO_TOKEN" \
-                          -var "ssh_fingerprint=$SSH_KEY"
-                    '''
-                }
-            }
         }
 
         stage('Build Docker Image (Docker)') {
@@ -163,7 +151,7 @@ pipeline {
                 sh "docker logout ${DOCKER_REGISTRY}"               
             }
         }
-        
+
         stage('Deployment to Kubernetes') {
             agent {
                 docker { 
