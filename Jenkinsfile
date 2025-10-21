@@ -103,6 +103,7 @@ pipeline {
                     export HOME=/tmp
                     export PATH=\$HOME/.local/bin:\$PATH   
                     terraform init
+                    terraform plan
                     terraform apply -auto-approve \
                     -var "do_token=$DO_TOKEN" \
                     -var "ssh_fingerprint=$SSH_KEY"
