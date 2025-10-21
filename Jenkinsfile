@@ -44,6 +44,11 @@ pipeline {
         }
 
         stage('Automated Testing (Unit & Integration)') {
+            environment {
+                DO_TOKEN = 'do-api-token'
+                SSH_KEY = 'do-private-key')
+            }
+
             steps {
                 echo('Install Terraform tp provide VM to run tests ..')
                 sh '''
@@ -83,12 +88,24 @@ pipeline {
                     terraform -v
                     '''
 
-
+                /*
                 sh '''
                     pip install --upgrade pip --break-system-packages
                     pip install -r requirements.txt --break-system-packages
                     python3 -m pytest -v --maxfail=1 --disable-warnings
+                    '''*/
+            }
+
+            steps {
+                dir('terraform') {
+                    sh '''
+                        echo "Provision VM with Terraform..."
+                        terraform init
+                        terraform apply -auto-approve \
+                          -var "do_token=$DO_TOKEN" \
+                          -var "ssh_fingerprint=$SSH_KEY"
                     '''
+                }
             }
         }
 
@@ -147,25 +164,6 @@ pipeline {
                 sh "docker logout ${DOCKER_REGISTRY}"               
             }
         }
-
-
-        /*stage('Preparing Kubernetes') {
-            agent {
-                docker { 
-                    image 'digitalocean/doctl:latest' 
-                }                
-            }         
-            steps {
-                echo 'creating new KubeConfig...'
-                withCredentials([string(credentialsId: 'do-api-token', variable: 'DO_API_TOKEN')]) {
-                    sh """
-                    doctl auth init -t $DO_API_TOKEN
-                    doctl kubernetes cluster kubeconfig save do-fra1-k8s-devseclab
-                    export KUBECONFIG=$HOME/.kube/config
-                    """
-                }
-            }
-        }   */    
 
         stage('Deployment to Kubernetes') {
             agent {

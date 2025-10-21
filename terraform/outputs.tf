@@ -1,4 +1,3 @@
-output "instance_ip" {
-  description = "Public IP of the EC2 instance"
-  value       = aws_instance.app_server.public_ip
+output "vm_ip" {
+  value = digitalocean_droplet.jenkins_vm.ipv4_address
 }
