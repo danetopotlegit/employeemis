@@ -204,6 +204,8 @@ pipeline {
                     # Verify installation
                     doctl version
 
+                    doctl compute ssh-key list
+
                     # Authenticate to DigitalOcean
                     doctl auth init -t $DO_API_TOKEN
 
