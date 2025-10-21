@@ -64,9 +64,17 @@ pipeline {
                     curl -fsSL https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip -o terraform.zip
 
                     # Unzip and move to /$HOME/local/bin
-                    unzip -o terraform.zip
-                    mv terraform \$HOME/.local/bin/
+                    unzip -o terraform.zip                    
                     rm terraform.zip
+
+
+                    # Clean up any existing directory named "terraform"
+                    if [ -d "\$HOME/.local/bin/terraform" ]; then
+                        echo "Removing old terraform directory..."
+                        sudo rm -rf \$HOME/.local/bin/terraform
+                    fi
+
+                    mv terraform \$HOME/.local/bin/
 
                     terraform -v
                     '''
