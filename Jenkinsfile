@@ -131,7 +131,9 @@ pipeline {
                         scp -o StrictHostKeyChecking=no -r . root@104.248.36.175:/root/project
                         ssh -o StrictHostKeyChecking=no root@104.248.36.175 << 'EOF'
                         apt update -y
-                        apt install -y python3 python3-pip
+                        apt install -y python3 python3-pip python3-venv
+                        python3 -m venv /root/project/venv
+                        source /root/project/venv/bin/activate
                         python3 -m pip install --upgrade pip --break-system-packages
                         python3 -m pip install -r /root/project/requirements.txt --break-system-packages
                         python3 -m pip install Flask Flask-SQLAlchemy pytest --break-system-packages
