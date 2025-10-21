@@ -97,6 +97,8 @@ pipeline {
                 SSH_KEY = 'do-ssh-key'
             }
 
+            echo "DO_TOKEN is: ${DO_TOKEN:0:6}********"
+
             steps {
                 dir('terraform') {
                     sh '''
