@@ -134,9 +134,8 @@ pipeline {
                         apt install -y python3 python3-pip python3-venv
                         python3 -m venv /root/project/venv
                         source /root/project/venv/bin/activate
-                        python3 -m pip install --upgrade pip --break-system-packages
-                        python3 -m pip install -r /root/project/requirements.txt --break-system-packages
-                        python3 -m pip install Flask Flask-SQLAlchemy pytest --break-system-packages
+                        python3 -m pip install --upgrade pip 
+                        python3 -m pip install -r /root/project/requirements.txt
                         python3 -m pytest -v /root/project --maxfail=1 --disable-warnings
                         '''
                 }
