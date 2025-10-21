@@ -97,26 +97,30 @@ pipeline {
                 DO_TOKEN = credentials('do-api-token')
                 SSH_KEY = credentials('do-ssh-key')
             }          
-            /*
+            
             steps {
-                dir('terraform') {
-                    sh """
-                    #!/bin/bash
-                    set -x
+
+                
                     echo "DO_TOKEN $DO_TOKEN"
                     echo "SSH_KEY $SSH_KEY"
-                    export HOME=/tmp
-                    export PATH=\$HOME/.local/bin:\$PATH   
-                    terraform init
-                    terraform plan \
-                        -var "do-api-token=${DO_TOKEN}" \
-                        -var "ssh_fingerprint=${SSH_KEY}"
-                    terraform apply -auto-approve \
-                        -var "do-api-token=${DO_TOKEN}" \
-                        -var "ssh_fingerprint=${SSH_KEY}"
-                    """
-                }
-            }*/
+
+                    /*
+                    dir('terraform') {
+                        sh """
+                        #!/bin/bash
+                        set -x
+                        export HOME=/tmp
+                        export PATH=\$HOME/.local/bin:\$PATH   
+                        terraform init
+                        terraform plan \
+                            -var "do-api-token=${DO_TOKEN}" \
+                            -var "ssh_fingerprint=${SSH_KEY}"
+                        terraform apply -auto-approve \
+                            -var "do-api-token=${DO_TOKEN}" \
+                            -var "ssh_fingerprint=${SSH_KEY}"
+                        """
+                    }*/
+            }
         }
 
         stage('Build Docker Image (Docker)') {
