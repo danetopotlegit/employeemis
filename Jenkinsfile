@@ -125,6 +125,10 @@ pipeline {
                             -raw vm_ip > vm_ip.txt
                         """
                     }
+
+                    sshagent (credentials: ['jenkins-ssh-key']) {
+                    sh '''ssh -o StrictHostKeyChecking=no root@104.248.36.175 "hostname && whoami"'''
+                }
             }
         }
 
