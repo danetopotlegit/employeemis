@@ -59,6 +59,7 @@ pipeline {
 
                     # Create a writable bin directory
                     mkdir -p \$HOME/.local/bin
+                    cd $HOME
 
                     # Download Terraform binary
                     curl -fsSL https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip -o terraform.zip
@@ -71,10 +72,13 @@ pipeline {
                     # Clean up any existing directory named "terraform"
                     if [ -d "\$HOME/.local/bin/terraform" ]; then
                         echo "Removing old terraform directory..."
-                        sudo rm -rf \$HOME/.local/bin/terraform
+                        rm -rf \$HOME/.local/bin/terraform
                     fi
 
-                    mv terraform \$HOME/.local/bin/
+                    mv -f terraform \$HOME/.local/bin/
+
+                    # Add to PATH (for current session)
+                    export PATH=$HOME/.local/bin:$PATH
 
                     terraform -v
                     '''
