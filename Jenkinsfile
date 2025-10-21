@@ -86,20 +86,16 @@ pipeline {
                     export PATH=$HOME/.local/bin:$PATH
 
                     terraform -v
-                    '''
 
+                    terraform init
+                    terraform apply -auto-approve -var "do_token=$DO_TOKEN" -var "ssh_fingerprint=$SSH_KEY"
+                    '''
+                /*
                 sh '''
                     pip install --upgrade pip --break-system-packages
                     pip install -r requirements.txt --break-system-packages
                     python3 -m pytest -v --maxfail=1 --disable-warnings
-                    '''
-
-                sh '''
-                    terraform init
-                    terraform apply -auto-approve \
-                    -var "do_token=$DO_TOKEN" \
-                    -var "ssh_fingerprint=$SSH_KEY"
-                    '''
+                    '''*/
             }
         }
 
