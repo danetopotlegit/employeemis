@@ -104,7 +104,7 @@ pipeline {
                         #!/bin/bash
                         set -x
                         echo "Checking environment variables..."
-                        echo "DO_TOKEN prefix: $(echo "$DO_TOKEN" | cut -c1-8)"
+                        echo "DO_TOKEN prefix: $(echo "$DO_TOKEN" | cut -c1-20)"
                         echo "SSH_KEY: $SSH_KEY"
                         '''
                     
@@ -121,6 +121,8 @@ pipeline {
                         terraform apply -auto-approve \
                             -var "do-api-token=${DO_TOKEN}" \
                             -var "ssh_fingerprint=${SSH_KEY}"
+                        terraform output \
+                            -raw vm_ip > vm_ip.txt
                         """
                     }
             }
