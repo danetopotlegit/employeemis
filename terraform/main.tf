@@ -18,7 +18,3 @@ resource "digitalocean_droplet" "jenkins_vm" {
   image  = "ubuntu-22-04-x64"       # Ubuntu image
   ssh_keys = [var.ssh_fingerprint]  # SSH key fingerprint added to your DO account
 }
-
-output "vm_ip" {
-  value = digitalocean_droplet.jenkins_vm.ipv4_address
-}
