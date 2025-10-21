@@ -107,7 +107,7 @@ pipeline {
                     echo "SSH_KEY $SSH_KEY"
                     """
 
-                    /*
+                    
                     dir('terraform') {
                         sh """
                         #!/bin/bash
@@ -122,7 +122,7 @@ pipeline {
                             -var "do-api-token=${DO_TOKEN}" \
                             -var "ssh_fingerprint=${SSH_KEY}"
                         """
-                    }*/
+                    }
             }
         }
 
