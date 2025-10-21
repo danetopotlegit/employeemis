@@ -91,6 +91,7 @@ pipeline {
             }
         }
 
+       /*
         stage('Provision VM with Terraform') {
             environment {
                 DO_TOKEN = 'do-api-token'
@@ -116,7 +117,7 @@ pipeline {
                     '''
                 }
             }
-        }
+        }*/
 
         stage('Build Docker Image (Docker)') {
             steps {
