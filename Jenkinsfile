@@ -139,15 +139,16 @@ pipeline {
                         ).trim()
                     }
 
-                    sshagent (credentials: ['test-vm-ssh-key']){
+                    docker.image('python:3.12').inside('-u root') {
                         sh """
                             echo "Connecting to VM at: ${env.VM_IP}"
-                            echo "User running this command: \$(whoami)"
-                            scp -o StrictHostKeyChecking=no -r -l root * ${env.VM_IP}:/root/project
-                            EOF
-                            """
+                            echo "Current user inside container: \$(whoami)"
+                            scp -o StrictHostKeyChecking=no -r * root@${env.VM_IP}:/root/project
+                        """
+                    }
 
-                        /*
+                    /*
+                    sshagent (credentials: ['test-vm-ssh-key']){
                         sh """
                             echo "Connecting to VM at: ${env.VM_IP}"
                             scp -o StrictHostKeyChecking=no -r * root@${env.VM_IP}:/root/project
@@ -161,8 +162,7 @@ pipeline {
                             python3 -m pytest -v /root/project --maxfail=1 --disable-warnings
                             EOF
                             """
-                        */
-                    }
+                    }*/
             }
         }
 
