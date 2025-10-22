@@ -143,10 +143,7 @@ pipeline {
                         sh """
                             echo "Connecting to VM at: ${env.VM_IP}"
                             echo "User running this command: \$(whoami)"
-                            echo "UID: \$(id -u)"
-                            echo "GID: \$(id -g)"
-                            echo "Full info: \$(id)"
-                            scp -o StrictHostKeyChecking=no -r * root@${env.VM_IP}:/root/project
+                            scp -o StrictHostKeyChecking=no -r -l root * ${env.VM_IP}:/root/project
                             EOF
                             """
 
