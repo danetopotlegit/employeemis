@@ -141,7 +141,7 @@ pipeline {
 
                     sshagent (credentials: ['jenkins-ssh-key']) {
                     sh """
-                        ssh -o StrictHostKeyChecking=no root@${VM_IP} '
+                        ssh -o StrictHostKeyChecking=no root@${env.VM_IP}'
                         if id -u jenkins >/dev/null 2>&1; then
                             echo "User jenkins already exists"
                         else
