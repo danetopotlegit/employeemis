@@ -327,6 +327,7 @@ pipeline {
                         kubectl get nodes -o wide
                         kubectl get deployments
                         kubectl get pods -o wide
+                        kubectl get namespaces -o wide
                         """
                     }
             }
