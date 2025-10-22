@@ -299,7 +299,6 @@ pipeline {
                         kubectl get pods -o wide
                         """
                     }
-                }
             }
         }         
 
