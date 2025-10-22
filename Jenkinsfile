@@ -328,6 +328,7 @@ pipeline {
                         kubectl get deployments
                         kubectl get pods -o wide
                         kubectl get namespaces -o wide
+                        kubectl get svc --all-namespaces -o wide | grep prometheus
                         """
                     }
             }
