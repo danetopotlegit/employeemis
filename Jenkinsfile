@@ -333,6 +333,9 @@ pipeline {
                         kubectl get pods -o wide
                         kubectl get namespaces -o wide
                         kubectl get svc --all-namespaces -o wide | grep prometheus
+
+                        kubectl logs prometheus-deployment-78f4bdd6bd-2rxhq
+
                         """
                     }
             }
