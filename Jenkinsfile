@@ -93,6 +93,11 @@ pipeline {
 
        
         stage('Provision VM with Terraform') {
+            agent {
+                docker {
+                    image 'hashicorp/terraform:1.9.8'
+                }
+            }
             environment {
                 DO_TOKEN = credentials('do-api-token')
                 SSH_KEY = credentials('do-ssh-key')
@@ -112,8 +117,8 @@ pipeline {
                         sh """
                         #!/bin/bash
                         set -x
-                        export HOME=/tmp
-                        export PATH=\$HOME/.local/bin:\$PATH   
+                        #export HOME=/tmp
+                        #export PATH=\$HOME/.local/bin:\$PATH   
                         terraform init
                         terraform plan \
                             -var "do-api-token=${DO_TOKEN}" \
@@ -128,7 +133,7 @@ pipeline {
 
                     script{
                         env.VM_IP = sh(
-                            script: 'export PATH=$HOME/.local/bin:\$PATH && terraform output -raw vm_ip',
+                            script: 'cd terraform && terraform output -raw vm_ip',
                             returnStdout: true
                         ).trim()
                     }
