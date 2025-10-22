@@ -334,7 +334,10 @@ pipeline {
                         kubectl get namespaces -o wide
                         kubectl get svc --all-namespaces -o wide | grep prometheus
 
-                        kubectl logs prometheus-deployment-78f4bdd6bd-2rxhq
+                        kubectl get pod prometheus-deployment-78f4bdd6bd-2rxhq -o jsonpath="{.status.containerStatuses[*].lastState.terminated.reason}"
+                        kubectl describe pod prometheus-deployment-78f4bdd6bd-2rxhq
+
+
 
                         """
                     }
