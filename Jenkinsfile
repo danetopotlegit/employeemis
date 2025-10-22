@@ -141,13 +141,13 @@ pipeline {
 
                     sshagent (credentials: ['jenkins-ssh-key']) {
                     sh ''' 
-                        scp -o StrictHostKeyChecking=no -r -p . root@${env.VM_IP}:/root/project
+                        scp -o StrictHostKeyChecking=no -r . root@${env.VM_IP}:/root/project
                         ssh -o StrictHostKeyChecking=no root@${env.VM_IP} << 'EOF'
                         apt update -y
                         apt install -y python3 python3-pip python3-venv
                         python3 -m venv /root/project/venv
                         source /root/project/venv/bin/activate
-                        python3 -m pip install --upgrade pip 
+                        python3 -m pip install --upgrade pip
                         python3 -m pip install -r /root/project/requirements.txt
                         python3 -m pytest -v /root/project --maxfail=1 --disable-warnings
                         '''
