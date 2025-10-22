@@ -96,7 +96,7 @@ pipeline {
             agent {
                 docker {
                     image 'hashicorp/terraform:1.9.8'
-                    args '-v /var/run/docker.sock:/var/run/docker.sock --entrypoint=""' 
+                    args '-u root -v /var/run/docker.sock:/var/run/docker.sock --entrypoint=""' 
                 }
             }
             environment {
@@ -139,13 +139,11 @@ pipeline {
                         ).trim()
                     }
 
-                    docker.image('python:3.12').inside('-u root') {
-                        sh """
-                            echo "Connecting to VM at: ${env.VM_IP}"
-                            echo "Current user inside container: \$(whoami)"
-                            scp -o StrictHostKeyChecking=no -r * root@${env.VM_IP}:/root/project
-                        """
-                    }
+                    sh """
+                        echo "Connecting to VM at: ${env.VM_IP}"
+                        echo "Current user inside container: \$(whoami)"
+                        scp -o StrictHostKeyChecking=no -r * root@${env.VM_IP}:/root/project
+                    """
 
                     /*
                     sshagent (credentials: ['test-vm-ssh-key']){
