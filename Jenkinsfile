@@ -139,7 +139,7 @@ pipeline {
                         ).trim()
                     }
 
-                    sshagent(['root-ssh-key']) {
+                    sshagent(['test-vm-ssh-key']) {
                         sh """
                         echo "Current user inside container: \$(whoami)"
                         echo "Copying files to ${env.VM_IP}:/root/project..."
