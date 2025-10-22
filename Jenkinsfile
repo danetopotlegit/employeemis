@@ -137,35 +137,30 @@ pipeline {
                             script: 'cd terraform && terraform output -raw vm_ip',
                             returnStdout: true
                         ).trim()
-
-
-                        def files = [
-                            "Dockerfile", "Jenkinsfile", "Jenkinsfile copy", "README.md", "app.py",
-                            "doctl.tar.gz", "hs_err_pid33336.log", "hs_err_pid49424.log",
-                            "k8s", "project.tar.gz", "replay_pid49424.log",
-                            "requirements.txt", "templates", "terraform", "terraform@tmp", "test_app.py"
-                        ].join(" ")
-
-                        sh 
-                        """ 
-                        scp -o StrictHostKeyChecking=no -r ${files} ${env.VM_IP}:/root/project
-                        """
                     }
 
                     sshagent (credentials: ['jenkins-ssh-key']){
-                        /*sh """
-                        echo "Connecting to VM at: ${env.VM_IP}"
-                        scp -o StrictHostKeyChecking=no -r * root@${env.VM_IP}:/root/project
-                        ssh -o StrictHostKeyChecking=no root@${env.VM_IP}' 
-                        apt update -y
-                        apt install -y python3 python3-pip python3-venv
-                        python3 -m venv /root/project/venv
-                        source /root/project/venv/bin/activate
-                        python3 -m pip install --upgrade pip
-                        python3 -m pip install -r /root/project/requirements.txt
-                        python3 -m pytest -v /root/project --maxfail=1 --disable-warnings
-                        EOF
-                        """*/
+                        sh """
+                            echo "Connecting to VM at: ${env.VM_IP}"
+                            scp -o StrictHostKeyChecking=no -r * root@${env.VM_IP}:/root/project
+                            EOF
+                            """
+
+                        /*
+                        sh """
+                            echo "Connecting to VM at: ${env.VM_IP}"
+                            scp -o StrictHostKeyChecking=no -r * root@${env.VM_IP}:/root/project
+                            ssh -o StrictHostKeyChecking=no root@${env.VM_IP}' 
+                            apt update -y
+                            apt install -y python3 python3-pip python3-venv
+                            python3 -m venv /root/project/venv
+                            source /root/project/venv/bin/activate
+                            python3 -m pip install --upgrade pip
+                            python3 -m pip install -r /root/project/requirements.txt
+                            python3 -m pytest -v /root/project --maxfail=1 --disable-warnings
+                            EOF
+                            """
+                        */
                     }
             }
         }
