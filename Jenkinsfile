@@ -148,7 +148,7 @@ pipeline {
 
                         sh 
                         """ 
-                        scp -o StrictHostKeyChecking=no -r ${files} ${remote}:/root/project
+                        scp -o StrictHostKeyChecking=no -r ${files} ${env.VM_IP}:/root/project
                         """
                     }
 
