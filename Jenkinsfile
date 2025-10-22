@@ -106,6 +106,7 @@ pipeline {
             
             steps {
 
+                    /*
                     sh '''
                         #!/bin/bash
                         set -x
@@ -130,13 +131,16 @@ pipeline {
                         terraform output \
                             -raw vm_ip > vm_ip.txt   
                         """
-                    }
+                    }*/
 
                     script{
+                        env.VM_IP = '164.90.231.217'
+                        /*
                         env.VM_IP = sh(
                             script: 'cd terraform && terraform output -raw vm_ip',
                             returnStdout: true
                         ).trim()
+                        */
                     }
 
                     sshagent(['test-vm-ssh-key']) {
