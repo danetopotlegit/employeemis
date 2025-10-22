@@ -96,7 +96,6 @@ pipeline {
             environment {
                 DO_TOKEN = credentials('do-api-token')
                 SSH_KEY = credentials('do-ssh-key')
-                VM_IP = ''
             }          
             
             steps {
@@ -122,10 +121,10 @@ pipeline {
                         terraform apply -auto-approve \
                             -var "do-api-token=${DO_TOKEN}" \
                             -var "ssh_fingerprint=${SSH_KEY}"
-                        terraform output \
-                            -raw vm_ip > vm_ip.txt                   
-                        ${VM_IP}=$(cat vm_ip.txt)
                         """
+
+                        env.VM_IP = sh(script: "terraform output -raw vm_ip", returnStdout: true).trim()
+                        echo "VM_IP set to: ${env.VM_IP}"
                     }
 
                     sshagent (credentials: ['jenkins-ssh-key']) {
