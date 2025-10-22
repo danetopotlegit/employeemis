@@ -124,7 +124,7 @@ pipeline {
                             -var "ssh_fingerprint=${SSH_KEY}"
                         terraform output \
                             -raw vm_ip > vm_ip.txt                   
-                        VM_IP=$(cat vm_ip.txt)
+                        ${VM_IP}=$(cat vm_ip.txt)
                         """
                     }
 
