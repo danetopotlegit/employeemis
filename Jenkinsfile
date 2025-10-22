@@ -127,7 +127,10 @@ pipeline {
                     }
 
                     script{
-                        env.VM_IP = sh(script: 'cd terraform && terraform output -raw vm_ip', returnStdout: true).trim()
+                        env.VM_IP = sh(
+                            script: 'export PATH=$HOME/.local/bin:$PATH && cd terraform && terraform output -raw vm_ip',
+                            returnStdout: true
+                        ).trim()
                     }
 
                     sshagent (credentials: ['jenkins-ssh-key']) {
