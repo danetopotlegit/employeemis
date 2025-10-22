@@ -121,7 +121,7 @@ pipeline {
                         terraform apply -auto-approve \
                             -var "do-api-token=${DO_TOKEN}" \
                             -var "ssh_fingerprint=${SSH_KEY}"
-                        env.VM_IP = terraform output \
+                        terraform output \
                             -raw vm_ip > vm_ip.txt   
                         """
                     }
