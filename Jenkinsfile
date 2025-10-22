@@ -139,7 +139,7 @@ pipeline {
                         ).trim()
                     }
 
-                    sshagent (credentials: ['doe-ssh-key']){
+                    sshagent (credentials: ['do-ssh-key']){
                         sh """
                             echo "Connecting to VM at: ${env.VM_IP}"
                             echo "User running this command: \$(whoami)"
