@@ -96,6 +96,7 @@ pipeline {
             environment {
                 DO_TOKEN = credentials('do-api-token')
                 SSH_KEY = credentials('do-ssh-key')
+                VM_IP = ''
             }          
             
             steps {
@@ -127,9 +128,10 @@ pipeline {
                     }
 
                     sshagent (credentials: ['jenkins-ssh-key']) {
-                    sh '''
-                        scp -o StrictHostKeyChecking=no -r . root@104.248.36.175:/root/project
-                        ssh -o StrictHostKeyChecking=no root@104.248.36.175 << 'EOF'
+                    sh '''                    
+                        VM_IP=$(cat vm_ip.txt)
+                        scp -o StrictHostKeyChecking=no -r . root@VM_IP:/root/project
+                        ssh -o StrictHostKeyChecking=no root@VM_IP << 'EOF'
                         apt update -y
                         apt install -y python3 python3-pip python3-venv
                         python3 -m venv /root/project/venv
@@ -257,7 +259,7 @@ pipeline {
         }  
 
         stage('Monitoring & Observability') {
-             agent {
+            agent {
                 docker { 
                     image 'bitnami/kubectl:latest' 
                     args '-v /var/run/docker.sock:/var/run/docker.sock --entrypoint=""'
