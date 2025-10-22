@@ -128,7 +128,7 @@ pipeline {
 
                     script{
                         env.VM_IP = sh(
-                            script: 'export PATH=$HOME/.local/bin:$PATH && cd terraform && terraform output -raw vm_ip',
+                            script: 'export PATH=$HOME/.local/bin:\$PATH && terraform output -raw vm_ip',
                             returnStdout: true
                         ).trim()
                     }
