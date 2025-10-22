@@ -139,14 +139,14 @@ pipeline {
                         ).trim()
                     }
 
-                    sshagent (credentials: ['do-ssh-key']){
+                    sshagent (credentials: ['test-vm-ssh-key']){
                         sh """
                             echo "Connecting to VM at: ${env.VM_IP}"
                             echo "User running this command: \$(whoami)"
                             echo "UID: \$(id -u)"
                             echo "GID: \$(id -g)"
                             echo "Full info: \$(id)"
-                            scp -i ${SSH_KEY} -o StrictHostKeyChecking=no -r * root@${env.VM_IP}:/root/project
+                            scp -o StrictHostKeyChecking=no -r * root@${env.VM_IP}:/root/project
                             EOF
                             """
 
