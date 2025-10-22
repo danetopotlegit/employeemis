@@ -137,13 +137,22 @@ pipeline {
                             script: 'cd terraform && terraform output -raw vm_ip',
                             returnStdout: true
                         ).trim()
+
+
+                        def files = [
+                            "Dockerfile", "Jenkinsfile", "Jenkinsfile copy", "README.md", "app.py",
+                            "doctl.tar.gz", "hs_err_pid33336.log", "hs_err_pid49424.log",
+                            "k8s", "project.tar.gz", "replay_pid49424.log",
+                            "requirements.txt", "templates", "terraform", "terraform@tmp", "test_app.py"
+                        ].join(" ")
+
+                        sh 
+                        """ 
+                        scp -o StrictHostKeyChecking=no -r ${files} ${remote}:/root/project
+                        """
                     }
 
                     sshagent (credentials: ['jenkins-ssh-key']){
-                        sh """
-                            echo "Connecting to VM at: ${env.VM_IP}"
-                            scp -o StrictHostKeyChecking=no -r root@${env.VM_IP}:/root/project
-                            """
                         /*sh """
                         echo "Connecting to VM at: ${env.VM_IP}"
                         scp -o StrictHostKeyChecking=no -r * root@${env.VM_IP}:/root/project
