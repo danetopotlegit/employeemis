@@ -145,7 +145,9 @@ pipeline {
                         """
                     */
                     sshagent (credentials: ['jenkins-ssh-key']) {
-                        sh """ echo "Connecting to VM at: ${env.VM_IP}"""
+                        sh """
+                                echo "Connecting to VM at: ${env.VM_IP}"
+                            """
                     /*sh """
                         echo "Connecting to VM at: ${env.VM_IP}"
                         scp -o StrictHostKeyChecking=no -r * root@${env.VM_IP}:/root/project
