@@ -139,19 +139,15 @@ pipeline {
                         ).trim()
                     }
 
-                    // sshagent (credentials: ['jenkins-ssh-key']) {
-                    /*sh """
-                        ssh -o StrictHostKeyChecking=no root@${VM_IP} "if id -u jenkins >/dev/null 2>&1; then echo 'User jenkins already exists'; else sudo useradd -m jenkins; echo 'User jenkins created'; fi"
-                        """
-                    */
-                    sshagent (credentials: ['jenkins-ssh-key']) {
+                    sshagent (credentials: ['jenkins-ssh-key']){
                         sh """
-                                echo "Connecting to VM at: ${env.VM_IP}"
+                            echo "Connecting to VM at: ${env.VM_IP}"
+                            scp -o StrictHostKeyChecking=no -r * root@${env.VM_IP}:/root/project
                             """
-                    /*sh """
+                        /*sh """
                         echo "Connecting to VM at: ${env.VM_IP}"
                         scp -o StrictHostKeyChecking=no -r * root@${env.VM_IP}:/root/project
-                        ssh -o StrictHostKeyChecking=no root@${env.VM_IP}'
+                        ssh -o StrictHostKeyChecking=no root@${env.VM_IP}' 
                         apt update -y
                         apt install -y python3 python3-pip python3-venv
                         python3 -m venv /root/project/venv
@@ -161,7 +157,7 @@ pipeline {
                         python3 -m pytest -v /root/project --maxfail=1 --disable-warnings
                         EOF
                         """*/
-                }
+                    }
             }
         }
 
