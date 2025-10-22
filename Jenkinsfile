@@ -123,14 +123,16 @@ pipeline {
                             -var "ssh_fingerprint=${SSH_KEY}"
                         """
 
-                        env.VM_IP = sh(script: "terraform output -raw vm_ip", returnStdout: true).trim()
-                        echo "VM_IP set to: ${env.VM_IP}"
+                        script {
+                            env.VM_IP = sh(script: 'cd terraform && terraform output -raw vm_ip', returnStdout: true).trim()
+                            echo "VM_IP is set to: ${env.VM_IP}"
+                        }
                     }
 
                     sshagent (credentials: ['jenkins-ssh-key']) {
                     sh ''' 
-                        scp -o StrictHostKeyChecking=no -r . root@VM_IP:/root/project
-                        ssh -o StrictHostKeyChecking=no root@VM_IP << 'EOF'
+                        scp -o StrictHostKeyChecking=no -r . root@${VM_IP}:/root/project
+                        ssh -o StrictHostKeyChecking=no root@${VM_IP} << 'EOF'
                         apt update -y
                         apt install -y python3 python3-pip python3-venv
                         python3 -m venv /root/project/venv
