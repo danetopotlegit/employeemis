@@ -123,13 +123,13 @@ pipeline {
                             -var "do-api-token=${DO_TOKEN}" \
                             -var "ssh_fingerprint=${SSH_KEY}"
                         terraform output \
-                            -raw vm_ip > vm_ip.txt
+                            -raw vm_ip > vm_ip.txt                   
+                        VM_IP=$(cat vm_ip.txt)
                         """
                     }
 
                     sshagent (credentials: ['jenkins-ssh-key']) {
-                    sh '''                    
-                        VM_IP=$(cat vm_ip.txt)
+                    sh ''' 
                         scp -o StrictHostKeyChecking=no -r . root@VM_IP:/root/project
                         ssh -o StrictHostKeyChecking=no root@VM_IP << 'EOF'
                         apt update -y
