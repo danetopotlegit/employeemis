@@ -141,7 +141,7 @@ pipeline {
 
                     sshagent (credentials: ['jenkins-ssh-key']) {
                     sh ''' 
-                        echo "Connecting to VM at: ${env.VM_IP}"
+                        echo "Connecting to VM at: env.VM_IP"
                         scp -o StrictHostKeyChecking=no -r . root@${env.VM_IP}:/root/project
                         ssh -o StrictHostKeyChecking=no root@${env.VM_IP} << EOF
                         apt update -y
