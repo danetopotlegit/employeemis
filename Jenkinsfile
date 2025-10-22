@@ -121,12 +121,13 @@ pipeline {
                         terraform apply -auto-approve \
                             -var "do-api-token=${DO_TOKEN}" \
                             -var "ssh_fingerprint=${SSH_KEY}"
+                        env.VM_IP = terraform output \
+                            -raw vm_ip > vm_ip.txt   
                         """
                     }
 
-                    script {
+                    script{
                         env.VM_IP = sh(script: 'cd terraform && terraform output -raw vm_ip', returnStdout: true).trim()
-                        echo "VM_IP is set to: ${env.VM_IP}"
                     }
 
                     sshagent (credentials: ['jenkins-ssh-key']) {
