@@ -142,7 +142,10 @@ pipeline {
                     sshagent (credentials: ['jenkins-ssh-key']){
                         sh """
                             echo "Connecting to VM at: ${env.VM_IP}"
-                            echo "User running this command: $USER Full info: $(id)"
+                            echo "User running this command: \${USER}"
+                            echo "UID: \$(id -u)"
+                            echo "GID: \$(id -g)"
+                            echo "Full info: \$(id)"
                             scp -i ${SSH_KEY} -o StrictHostKeyChecking=no -r * root@${env.VM_IP}:/root/project
                             EOF
                             """
