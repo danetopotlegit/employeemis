@@ -140,8 +140,8 @@ pipeline {
                     }
 
                     sshagent (credentials: ['jenkins-ssh-key']) {
-                    sh ''' 
-                        echo "Connecting to VM at: env.VM_IP"
+                    sh """
+                        echo "Connecting to VM at: ${env.VM_IP}"
                         scp -o StrictHostKeyChecking=no -r . root@${env.VM_IP}:/root/project
                         ssh -o StrictHostKeyChecking=no root@${env.VM_IP} << EOF
                         apt update -y
@@ -151,7 +151,8 @@ pipeline {
                         python3 -m pip install --upgrade pip
                         python3 -m pip install -r /root/project/requirements.txt
                         python3 -m pytest -v /root/project --maxfail=1 --disable-warnings
-                        '''
+                        EOF
+                        """
                 }
             }
         }
