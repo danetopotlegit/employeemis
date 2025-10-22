@@ -142,7 +142,7 @@ pipeline {
                     sshagent (credentials: ['jenkins-ssh-key']){
                         sh """
                             echo "Connecting to VM at: ${env.VM_IP}"
-                            echo "User running this command: $(whoami)"
+                            echo "User running this command: \$(whoami)"
                             echo "UID: \$(id -u)"
                             echo "GID: \$(id -g)"
                             echo "Full info: \$(id)"
