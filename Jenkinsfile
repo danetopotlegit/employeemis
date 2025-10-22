@@ -96,6 +96,7 @@ pipeline {
             agent {
                 docker {
                     image 'hashicorp/terraform:1.9.8'
+                    args '-v /var/run/docker.sock:/var/run/docker.sock --entrypoint=""' 
                 }
             }
             environment {
