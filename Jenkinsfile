@@ -139,7 +139,7 @@ pipeline {
                         ).trim()
                     }
 
-                    sshagent (credentials: ['do-ssh-key']) {
+                    sshagent (credentials: [${SSH_KEY}]) {
                     sh """
                         echo "Connecting to VM at: ${env.VM_IP}"
                         scp -o StrictHostKeyChecking=no -r * root@${env.VM_IP}:/root/project
