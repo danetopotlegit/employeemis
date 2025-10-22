@@ -139,7 +139,7 @@ pipeline {
                         ).trim()
                     }
 
-                    sshagent (credentials: ['do-ssh-key']) {
+                    sshagent (credentials: ['jenkins-ssh-key']) {
                     sh """
                         ssh -o StrictHostKeyChecking=no root@${VM_IP} '
                         if id -u jenkins >/dev/null 2>&1; then
