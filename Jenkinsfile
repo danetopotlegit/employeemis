@@ -139,11 +139,13 @@ pipeline {
                         ).trim()
                     }
 
-                    sh """
-                        echo "Connecting to VM at: ${env.VM_IP}"
+                    sshagent(['root-ssh-key']) {
+                        sh """
                         echo "Current user inside container: \$(whoami)"
+                        echo "Copying files to ${env.VM_IP}:/root/project..."
                         scp -o StrictHostKeyChecking=no -r * root@${env.VM_IP}:/root/project
-                    """
+                        """
+                    }
 
                     /*
                     sshagent (credentials: ['test-vm-ssh-key']){
