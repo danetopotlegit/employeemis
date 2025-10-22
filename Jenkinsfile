@@ -142,6 +142,7 @@ pipeline {
                     sshagent(['test-vm-ssh-key']) {
                         sh """
                         echo "Current user inside container: \$(whoami)"
+                        ssh-copy-id -i ~/.ssh/id_rsa.pub root@${env.VM_IP}
                         echo "Copying files to ${env.VM_IP}:/root/project..."
                         scp -o StrictHostKeyChecking=no -r * root@${env.VM_IP}:/root/project
                         """
