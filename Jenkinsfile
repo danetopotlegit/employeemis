@@ -139,10 +139,18 @@ pipeline {
                         ).trim()
                     }
 
+                    sshagent (credentials: ['do-ssh-key']) {
+                    sh """
+                        echo "Connecting to VM at: ${env.VM_IP}"
+                        scp -o StrictHostKeyChecking=no -r * root@${env.VM_IP}:/root/project
+                        ssh -o StrictHostKeyChecking=no root@${env.VM_IP}'
+                        """
+
+                    /*
                     sshagent (credentials: ['jenkins-ssh-key']) {
                     sh """
                         echo "Connecting to VM at: ${env.VM_IP}"
-                        scp -o StrictHostKeyChecking=no -r * -p=false root@${env.VM_IP}:/root/project
+                        scp -o StrictHostKeyChecking=no -r * root@${env.VM_IP}:/root/project
                         ssh -o StrictHostKeyChecking=no root@${env.VM_IP}'
                         apt update -y
                         apt install -y python3 python3-pip python3-venv
@@ -152,7 +160,7 @@ pipeline {
                         python3 -m pip install -r /root/project/requirements.txt
                         python3 -m pytest -v /root/project --maxfail=1 --disable-warnings
                         EOF
-                        """
+                        """/
                 }
             }
         }
