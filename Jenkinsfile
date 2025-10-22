@@ -254,7 +254,54 @@ pipeline {
                     """
                 }
             }
-        }           
+        }  
+
+        stage('Monitoring & Observability') {
+            steps {
+                    echo 'Install Prometheus & Grafana...'
+                    withCredentials([string(credentialsId: 'do-api-token', variable: 'DO_API_TOKEN')]) {
+                        sh """
+                        # Set environment for non-root container
+                        export USER=jenkins
+                        export HOME=/tmp
+                        export PATH=\$HOME/.local/bin:\$PATH
+
+                        # Create a writable bin directory
+                        mkdir -p \$HOME/.local/bin
+
+                        # Download and extract doctl
+                        curl -sL https://github.com/digitalocean/doctl/releases/download/v1.102.0/doctl-1.102.0-linux-amd64.tar.gz | tar -xzv
+                        mv doctl \$HOME/.local/bin/
+
+                        # Verify installation
+                        doctl version
+
+                        # Authenticate to DigitalOcean
+                        doctl auth init -t $DO_API_TOKEN
+
+                        doctl compute ssh-key list
+
+                        # Save kubeconfig for your cluster
+                        doctl kubernetes cluster kubeconfig save k8s-devseclab
+
+                        # Set KUBECONFIG so kubectl can use it
+                        export KUBECONFIG=\$HOME/.kube/config
+                        kubectl config current-context
+
+                        # Verify access to cluster
+                        # kubectl get nodes
+                        kubectl apply -f k8s/prometheus-deployment.yaml
+                        kubectl apply -f k8s/grafana-deployment.yaml
+                        kubectl version --client
+                        kubectl get svc
+                        kubectl get nodes -o wide
+                        kubectl get deployments
+                        kubectl get pods -o wide
+                        """
+                    }
+                }
+            }
+        }         
 
         stage('Dynamic Application Security Testing (OWASP ZAP)') {
             steps {
