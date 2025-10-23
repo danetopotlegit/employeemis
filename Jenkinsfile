@@ -322,12 +322,8 @@ pipeline {
             steps {
                sh '''
                 echo "Running OWASP ZAP Baseline Scan..."
-                docker pull owasp/zap2docker-stable
-                docker run --rm -v $(pwd):/zap/wrk/:rw owasp/zap2docker-stable zap-baseline.py \
-                    -t http://144.126.252.134/ \
-                    -r zap_report.html \
-                    -J zap_report.json \
-                    -z "-config api.disablekey=true"
+                docker pull ghcr.io/zaproxy/zaproxy:stable
+                docker run --rm -v $(pwd):/zap/wrk/:rw ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://144.126.252.134 -r zap_report.html
                 '''
 
                 publishHTML([allowMissing: false,
