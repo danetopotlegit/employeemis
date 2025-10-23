@@ -335,9 +335,9 @@ pipeline {
                 cd /zap/wrk
 
                 # Run scan and ignore non-zero exit code (ZAP exits 2 for warnings)
-                zap-baseline.py -t http://144.126.252.134 -r zap_report.html || true
-
-                echo "ZAP Baseline Scan completed. Report available: zap_report.html"
+                zap-baseline.py -t http://144.126.252.134 -r ${WORKSPACE}/zap_report.html || true
+                chmod 644 ${WORKSPACE}/zap_report.html
+                echo "ZAP report created at: ${WORKSPACE}/zap_report.html"
                 '''
 
                 publishHTML([allowMissing: false,
