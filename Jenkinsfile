@@ -82,12 +82,6 @@ pipeline {
 
                     terraform -v
                     '''
-                /*
-                sh '''
-                    pip install --upgrade pip --break-system-packages
-                    pip install -r requirements.txt --break-system-packages
-                    python3 -m pytest -v --maxfail=1 --disable-warnings
-                    '''*/
             }
         }
 
@@ -105,8 +99,6 @@ pipeline {
             }          
             
             steps {
-
-                    /*
                     sh '''
                         #!/bin/bash
                         set -x
@@ -131,16 +123,13 @@ pipeline {
                         terraform output \
                             -raw vm_ip > vm_ip.txt   
                         """
-                    }*/
+                    }
 
                     script{
-                        env.VM_IP = '164.90.231.217'
-                        /*
                         env.VM_IP = sh(
                             script: 'cd terraform && terraform output -raw vm_ip',
                             returnStdout: true
                         ).trim()
-                        */
                     }
 
                     sshagent(['test-vm-ssh-key']) {
@@ -158,23 +147,6 @@ pipeline {
                         python3 -m pytest -v /root/project --maxfail=1 --disable-warnings
                         """
                     }
-
-                    /*
-                    sshagent (credentials: ['test-vm-ssh-key']){
-                        sh """
-                            echo "Connecting to VM at: ${env.VM_IP}"
-                            scp -o StrictHostKeyChecking=no -r * root@${env.VM_IP}:/root/project
-                            ssh -o StrictHostKeyChecking=no root@${env.VM_IP}' 
-                            apt update -y
-                            apt install -y python3 python3-pip python3-venv
-                            python3 -m venv /root/project/venv
-                            source /root/project/venv/bin/activate
-                            python3 -m pip install --upgrade pip
-                            python3 -m pip install -r /root/project/requirements.txt
-                            python3 -m pytest -v /root/project --maxfail=1 --disable-warnings
-                            EOF
-                            """
-                    }*/
             }
         }
 
@@ -341,12 +313,6 @@ pipeline {
                         kubectl get pods -o wide
                         kubectl get namespaces -o wide
                         kubectl get svc --all-namespaces -o wide | grep prometheus
-
-                        kubectl get pod prometheus-deployment-78f4bdd6bd-2rxhq -o jsonpath="{.status.containerStatuses[*].lastState.terminated.reason}"
-                        kubectl describe pod prometheus-deployment-78f4bdd6bd-2rxhq
-
-
-
                         """
                     }
             }
@@ -354,7 +320,21 @@ pipeline {
 
         stage('Dynamic Application Security Testing (OWASP ZAP)') {
             steps {
-                echo('Skipping ....')
+               sh '''
+                echo "Running OWASP ZAP Baseline Scan..."
+                docker run --rm -v $(pwd):/zap/wrk/:rw owasp/zap2docker-stable zap-baseline.py \
+                    -t http://144.126.252.134/ \
+                    -r zap_report.html \
+                    -J zap_report.json \
+                    -z "-config api.disablekey=true"
+                '''
+
+                publishHTML([allowMissing: false,
+                             alwaysLinkToLastBuild: true,
+                             keepAll: true,
+                             reportDir: '.',
+                             reportFiles: 'zap_report.html',
+                             reportName: 'OWASP ZAP DAST Report'])
             }
         }
 
