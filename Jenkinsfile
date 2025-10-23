@@ -43,7 +43,7 @@ pipeline {
             }
         }
 
-        stage('Automated Testing (Unit & Integration)') {          
+        stage('Setting Up Terraform') {          
             steps {
                 echo('Install Terraform to provide VM to run tests ..')
                 sh '''
@@ -126,14 +126,17 @@ pipeline {
                     }
 
                     script{
-                        env.VM_IP = sh(
+                        env.VM_IP = '164.90.231.217'
+                        /*env.VM_IP = sh(
                             script: 'cd terraform && terraform output -raw vm_ip',
                             returnStdout: true
-                        ).trim()
+                        ).trim()*/
                     }
 
+                   
                     sshagent(['test-vm-ssh-key']) {
                         sh """
+                        # Running Tests in VM provided by terrafor,
                         echo "Current user inside container: \$(whoami)"
                         echo "Copying files to ${env.VM_IP}:/root/project..."
                         scp -o StrictHostKeyChecking=no -r * root@${env.VM_IP}:/root/project
