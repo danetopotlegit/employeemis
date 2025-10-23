@@ -321,7 +321,7 @@ pipeline {
             }
         }         
 
-        stage('Dynamic Application Security Testing (OWASP ZAP)') {
+       stage('Dynamic Application Security Testing (OWASP ZAP)') {
             agent {
                 docker {
                     image 'ghcr.io/zaproxy/zaproxy:stable'
@@ -330,31 +330,39 @@ pipeline {
             }
 
             steps {
-               sh '''
-               echo "Running OWASP ZAP Baseline Scan..."
-                cd /zap/wrk
+                catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
+                    sh '''
+                        echo "Running OWASP ZAP Baseline Scan..."
+                        mkdir -p /zap/wrk/output
 
-                # Run scan and ignore non-zero exit code (ZAP exits 2 for warnings)
-                zap-baseline.py -t http://144.126.252.134 -r zap_report.html || true
-                chmod 644 ${WORKSPACE}/zap_report.html
-                echo "ZAP report created at: ${WORKSPACE}/zap_report.html"
-                '''
+                        # Run scan and explicitly write report to a subfolder
+                        zap-baseline.py -t http://144.126.252.134 -r /zap/wrk/output/zap_report.html || true
 
-                publishHTML([allowMissing: false,
-                             alwaysLinkToLastBuild: true,
-                             keepAll: true,
-                             reportDir: '.',
-                             reportFiles: 'zap_report.html',
-                             reportName: 'OWASP ZAP DAST Report'])
-            }
+                        echo "Listing output folder:"
+                        ls -lah /zap/wrk/output || true
 
-            post {
-                always {
-                    archiveArtifacts artifacts: 'zap_report.html', fingerprint: true
-                    echo 'ZAP report archived successfully.'
+                        # Copy the report to the top of Jenkins workspace
+                        if [ -f /zap/wrk/output/zap_report.html ]; then
+                            cp /zap/wrk/output/zap_report.html /zap/wrk/zap_report.html
+                            chmod 644 /zap/wrk/zap_report.html
+                            echo "ZAP report copied to Jenkins workspace."
+                        else
+                            echo "⚠️ ZAP did not produce zap_report.html!"
+                        fi
+                    '''
+                }
+
+                script {
+                    if (fileExists('zap_report.html')) {
+                        archiveArtifacts artifacts: 'zap_report.html', fingerprint: true
+                        echo '✅ ZAP report archived successfully.'
+                    } else {
+                        echo '⚠️ No zap_report.html found — skipping archive.'
+                    }
                 }
             }
         }
+
 
         stage('Post-deployment Security Scan (Port Scan/Vulnerability check) (Trivy)') {
             agent {
