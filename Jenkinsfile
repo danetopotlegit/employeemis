@@ -332,23 +332,26 @@ pipeline {
             steps {
                 catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
                     sh '''
-                        echo "Running OWASP ZAP Baseline Scan..."
-                        mkdir -p /zap/wrk/output
+                    echo "Running OWASP ZAP Baseline Scan..."
+                    cd /zap/wrk
 
-                        # Run scan and explicitly write report to a subfolder
-                        zap-baseline.py -t http://144.126.252.134 -r /zap/wrk/output/zap_report.html || true
+                    # make sure output directory exists
+                    mkdir -p output
 
-                        echo "Listing output folder:"
-                        ls -lah /zap/wrk/output || true
+                    # Run scan from inside /zap/wrk, using relative output path
+                    zap-baseline.py -t http://144.126.252.134 -r output/zap_report.html || true
 
-                        # Copy the report to the top of Jenkins workspace
-                        if [ -f /zap/wrk/output/zap_report.html ]; then
-                            cp /zap/wrk/output/zap_report.html /zap/wrk/zap_report.html
-                            chmod 644 /zap/wrk/zap_report.html
-                            echo "ZAP report copied to Jenkins workspace."
-                        else
-                            echo "⚠️ ZAP did not produce zap_report.html!"
-                        fi
+                    echo "Listing output directory:"
+                    ls -lah output || true
+
+                    # Copy to root of workspace for Jenkins
+                    if [ -f output/zap_report.html ]; then
+                        cp output/zap_report.html zap_report.html
+                        chmod 644 zap_report.html
+                        echo "ZAP report copied to Jenkins workspace."
+                    else
+                        echo "ZAP did not produce zap_report.html!"
+                    fi
                     '''
                 }
 
