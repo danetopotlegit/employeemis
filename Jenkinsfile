@@ -325,7 +325,7 @@ pipeline {
             agent {
                 docker {
                     image 'ghcr.io/zaproxy/zaproxy:stable'
-                    args '-u root -v $WORKSPACE:/zap/wrk --entrypoint=""'
+                    args "-u root -v ${env.WORKSPACE}:/zap/wrk --entrypoint=''"
                 }
             }
 
