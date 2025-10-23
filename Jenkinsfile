@@ -332,7 +332,7 @@ pipeline {
             steps {
                sh '''
                 echo "Running OWASP ZAP Baseline Scan..."
-                docker run --rm -v $(pwd):/zap/wrk/:rw ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://144.126.252.134 -r zap_report.html
+                zap-baseline.py -t http://144.126.252.134 -r zap_report.html
                 '''
 
                 publishHTML([allowMissing: false,
