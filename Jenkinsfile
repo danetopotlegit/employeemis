@@ -332,7 +332,19 @@ pipeline {
             steps {
                sh '''
                 echo "Running OWASP ZAP Baseline Scan..."
+
+                # Create the expected working directory
+                mkdir -p /zap/wrk
+
+                # Copy Jenkins workspace files into ZAP working directory
+                cp -r . /zap/wrk/
+
+                # Run the baseline scan from inside ZAP's work directory
+                cd /zap/wrk
                 zap-baseline.py -t http://144.126.252.134 -r zap_report.html
+
+                # Move the report back to the Jenkins workspace for publishing
+                cp /zap/wrk/zap_report.html .
                 '''
 
                 publishHTML([allowMissing: false,
