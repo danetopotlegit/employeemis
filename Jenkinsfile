@@ -331,20 +331,13 @@ pipeline {
 
             steps {
                sh '''
-                echo "Running OWASP ZAP Baseline Scan..."
-
-                # Create the expected working directory
-                mkdir -p /zap/wrk
-
-                # Copy Jenkins workspace files into ZAP working directory
-                cp -r . /zap/wrk/
-
-                # Run the baseline scan from inside ZAP's work directory
+               echo "Running OWASP ZAP Baseline Scan..."
                 cd /zap/wrk
+
+                # Run scan and ignore non-zero exit code (ZAP exits 2 for warnings)
                 zap-baseline.py -t http://144.126.252.134 -r zap_report.html || true
 
-                # Move the report back to the Jenkins workspace for publishing
-                cp /zap/wrk/zap_report.html .
+                echo "ZAP Baseline Scan completed. Report available: zap_report.html"
                 '''
 
                 publishHTML([allowMissing: false,
@@ -353,6 +346,12 @@ pipeline {
                              reportDir: '.',
                              reportFiles: 'zap_report.html',
                              reportName: 'OWASP ZAP DAST Report'])
+            }
+
+            post {
+                always {
+                    archiveArtifacts artifacts: 'zap_report.html', fingerprint: true
+                }
             }
         }
 
@@ -377,7 +376,7 @@ pipeline {
                     archiveArtifacts artifacts: 'trivy-report.txt', fingerprint: true
                 }
                 failure {
-                    mail to: 'security-team@company.com',
+                    mail to: 'danetopot@gmail.com',
                         subject: 'Critical Vulnerabilities Found in Deployment',
                         body: 'Check Jenkins build logs and Trivy report for details.'
                 }
