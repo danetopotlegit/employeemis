@@ -352,7 +352,7 @@ pipeline {
                 echo 'Running Trivy scan on deployed image...'
                 sh '''
                     trivy image --exit-code 0 --severity MEDIUM,HIGH,CRITICAL employee-mis:latest > trivy-report.txt
-                    trivy image --exit-code 1 --severity CRITICAL employee-mis:latest || true
+                    trivy image --exit-code 0 --severity CRITICAL employee-mis:latest || true
                 '''
                 echo 'Generating scan report...'
                 sh 'cat trivy-report.txt'
