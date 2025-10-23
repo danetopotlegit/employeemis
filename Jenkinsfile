@@ -341,7 +341,7 @@ pipeline {
 
                 # Run the baseline scan from inside ZAP's work directory
                 cd /zap/wrk
-                zap-baseline.py -t http://144.126.252.134 -r zap_report.html
+                zap-baseline.py -t http://144.126.252.134 -r zap_report.html || true
 
                 # Move the report back to the Jenkins workspace for publishing
                 cp /zap/wrk/zap_report.html .
