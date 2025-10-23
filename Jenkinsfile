@@ -342,8 +342,30 @@ pipeline {
         }
 
         stage('Post-deployment Security Scan (Port Scan/Vulnerability check) (Trivy)') {
+            agent {
+                docker {
+                    image 'aquasec/trivy:latest'
+                    args '-v /var/run/docker.sock:/var/run/docker.sock'
+                }
+            }
             steps {
-                echo('Skipping ...')
+                echo 'Running Trivy scan on deployed image...'
+                sh '''
+                    trivy image --exit-code 0 --severity MEDIUM,HIGH,CRITICAL employee-mis:latest > trivy-report.txt
+                    trivy image --exit-code 1 --severity CRITICAL employee-mis:latest || true
+                '''
+                echo 'Generating scan report...'
+                sh 'cat trivy-report.txt'
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'trivy-report.txt', fingerprint: true
+                }
+                failure {
+                    mail to: 'security-team@company.com',
+                        subject: 'Critical Vulnerabilities Found in Deployment',
+                        body: 'Check Jenkins build logs and Trivy report for details.'
+                }
             }
         }
     }
