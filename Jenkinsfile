@@ -346,8 +346,8 @@ pipeline {
 
                     # Copy to root of workspace for Jenkins
                     if [ -f output/zap_report.html ]; then
-                        cp output/zap_report.html zap_report.html
-                        chmod 644 zap_report.html
+                        cp output/zap_report.html "$WORKSPACE/zap_report.html"
+                        chmod 644 "$WORKSPACE/zap_report.html"
                         echo "ZAP report copied to Jenkins workspace."
                     else
                         echo "ZAP did not produce zap_report.html!"
@@ -356,11 +356,11 @@ pipeline {
                 }
 
                 script {
-                    if (fileExists('output/zap_report.html')) {
-                        archiveArtifacts artifacts: 'output/zap_report.html', fingerprint: true
-                        echo '✅ ZAP report archived successfully.'
+                    if (fileExists('zap_report.html')) {
+                        archiveArtifacts artifacts: 'zap_report.html', fingerprint: true
+                        echo 'ZAP report archived successfully.'
                     } else {
-                        echo '⚠️ No zap_report.html found — skipping archive.'
+                        echo 'No zap_report.html found — skipping archive.'
                     }
                 }
             }
