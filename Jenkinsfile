@@ -356,8 +356,8 @@ pipeline {
                 }
 
                 script {
-                    if (fileExists('zap_report.html')) {
-                        archiveArtifacts artifacts: 'zap_report.html', fingerprint: true
+                    if (fileExists('output/zap_report.html')) {
+                        archiveArtifacts artifacts: 'output/zap_report.html', fingerprint: true
                         echo '✅ ZAP report archived successfully.'
                     } else {
                         echo '⚠️ No zap_report.html found — skipping archive.'
