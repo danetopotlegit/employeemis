@@ -368,11 +368,15 @@ pipeline {
 
 
         stage('Post-deployment Security Scan (Port Scan/Vulnerability check) (Trivy)') {
-            agent {
+             agent {
                 docker {
                     image 'aquasec/trivy:latest'
                     args '-v /var/run/docker.sock:/var/run/docker.sock --entrypoint=""'
                 }
+            }
+
+            environment {
+                TRIVY_CACHE_DIR = "${WORKSPACE}/.trivycache"
             }
             steps {
                 echo 'Running Trivy scan on deployed image...'
